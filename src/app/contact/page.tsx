@@ -1,34 +1,58 @@
 import Link from "next/link";
 
+const contactSteps = ["Tell us what feels messy", "We map the business", "We build the operating plan"];
+
 export default function Contact() {
   return (
-    <main className="bg-transparent">
-      <section id="contact" className="bg-[#f7f4ff] px-6 py-24 sm:py-32">
-        <div className="mx-auto max-w-5xl rounded-[2rem] bg-[#17142a] px-6 py-16 text-center text-white shadow-[0_28px_80px_rgba(23,20,42,0.22)] sm:px-12">
-          <p className="text-sm font-bold uppercase text-[#ffe84f]">
-            Get Started
+    <main className="text-white">
+      <section id="contact" className="video-section premium-grid px-6 pb-24 pt-36">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.78fr] lg:items-end">
+          <div className="video-copy video-panel rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10">
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
+              Start here
+            </p>
+            <h1 className="mt-5 text-6xl font-black leading-none text-balance sm:text-8xl">
+              Build a business that feels controlled.
+            </h1>
+          </div>
+          <div className="video-copy rounded-[2rem] border border-white/10 bg-[#08080c]/62 p-6 backdrop-blur-xl">
+            <p className="text-lg leading-8 text-white/68">
+              If the work is scattered, the next move is structure. Send us a
+              note and we will help identify the operating gaps worth fixing
+              first.
+            </p>
+            <div className="mt-8 flex flex-col gap-3">
+              <a
+                href="mailto:hello@formalize.co.za"
+                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
+              >
+                Email Formalize
+              </a>
+              <Link
+                href="/services"
+                className="inline-flex justify-center rounded-full border border-white/12 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white/70 transition-colors hover:bg-white hover:text-[#08080c]"
+              >
+                Review services
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-primary px-6 py-24 text-[#08080c]">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-sm font-black uppercase tracking-[0.24em]">
+            Engagement flow
           </p>
-          <h1 className="mx-auto mt-4 max-w-3xl text-5xl font-bold leading-tight sm:text-6xl">
-            Ready to make your business feel easier to run?
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/70">
-            Stop losing money to disorganization. Let us build the systems your
-            business needs to run properly, with everything connected in one
-            place.
-          </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <a
-              href="mailto:hello@formalize.co.za"
-              className="rounded-full bg-[#ffe84f] px-8 py-4 text-lg font-bold text-[#17142a] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffe84f]"
-            >
-              Email Us
-            </a>
-            <Link
-              href="/services"
-              className="rounded-full bg-white/10 px-8 py-4 text-lg font-bold text-white ring-1 ring-white/20 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              View Services
-            </Link>
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {contactSteps.map((step, index) => (
+              <div key={step} className="border-t border-[#08080c]/20 pt-5">
+                <p className="text-sm font-black">0{index + 1}</p>
+                <h2 className="mt-8 text-3xl font-black leading-tight">
+                  {step}
+                </h2>
+              </div>
+            ))}
           </div>
         </div>
       </section>

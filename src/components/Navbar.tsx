@@ -12,11 +12,11 @@ const NAV_LINKS = [
 
 export function Navbar() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[#17142a]/10 bg-[#fffaf1]/90 backdrop-blur-xl">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    <header className="fixed inset-x-0 top-0 z-[1000]">
+      <nav className="mx-auto mt-4 flex h-16 max-w-7xl items-center justify-between rounded-full border border-white/10 bg-[#08080c]/72 px-4 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:px-6">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-[#17142a]/10"
+          className="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-white/20"
         >
           <Image
             src="/Formalize-Logo.png"
@@ -30,12 +30,12 @@ export function Navbar() {
         <ul className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
-              <a
+              <Link
                 href={link.href}
-                className="rounded-full px-3 py-2 text-sm font-semibold text-[#4c466b] transition-colors hover:bg-[#ff4fa3]/10 hover:text-[#17142a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4fa3]"
+                className="rounded-full px-3 py-2 text-sm font-semibold text-white/68 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
@@ -46,7 +46,7 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             href="/contact"
-            className="hidden rounded-full bg-[#17142a] px-5 py-2 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(255,79,163,0.25)] transition-colors hover:bg-[#ff4fa3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4fa3] sm:inline-flex"
+            className="hidden rounded-full bg-primary px-5 py-2 text-sm font-bold text-[#08080c] shadow-[0_10px_34px_rgba(var(--primary-rgb),0.22)] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:inline-flex"
           >
             Get Started
           </Link>

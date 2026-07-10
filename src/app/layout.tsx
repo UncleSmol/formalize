@@ -10,7 +10,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -30,12 +30,14 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${poppins.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#f7f4ff] text-[#17142a] relative overflow-x-hidden">
+      <body className="relative flex min-h-full flex-col overflow-x-hidden bg-[#08080c] text-white">
         <ScrollToTop />
         <StickyVideoBackground />
-        <Navbar />
-        <div className="flex-1 pt-16 relative z-10">{children}</div>
-        <Footer />
+        <div className="relative z-10 flex min-h-full flex-1 flex-col">
+          <Navbar />
+          <div className="flex-1 pt-16">{children}</div>
+          <Footer />
+        </div>
       </body>
     </html>
   );

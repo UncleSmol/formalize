@@ -24,21 +24,21 @@ export function ServicesDropdown() {
   return (
     <div ref={containerRef} className="relative">
       <button
-        className="rounded-full px-3 py-2 text-sm font-semibold text-[#4c466b] transition-colors hover:bg-[#ff4fa3]/10 hover:text-[#17142a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff4fa3]"
+        className="rounded-full px-3 py-2 text-sm font-semibold text-white/68 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         onClick={() => setIsOpen(!isOpen)}
       >
         Services
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-[600px] rounded-2xl bg-white/95 backdrop-blur-sm shadow-[0_28px_80px_rgba(23,20,42,0.12)] ring-1 ring-[#17142a]/10 overflow-hidden z-50">
+        <div className="absolute right-0 top-full z-50 mt-3 w-[640px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#101018]/96 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
           <div className="grid grid-cols-2 gap-3 p-4">
             {SERVICES.map((service) => (
               <Link
                 key={service.id}
                 href={service.href}
                 onClick={() => setIsOpen(false)}
-                className="group rounded-xl p-4 transition-colors hover:bg-[#f7f4ff]"
+                className="group rounded-2xl p-4 transition-colors hover:bg-white/8"
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -48,9 +48,11 @@ export function ServicesDropdown() {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-[#17142a] group-hover:text-[#ff4fa3]">
-                      {service.title}
+                      <span className="text-white group-hover:text-primary">
+                        {service.title}
+                      </span>
                     </h3>
-                    <p className="mt-1 text-xs leading-4 text-[#4c466b]">
+                    <p className="mt-1 text-xs leading-4 text-white/55">
                       {service.description}
                     </p>
                   </div>
