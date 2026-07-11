@@ -27,20 +27,18 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           <div>
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              className="sharp-button inline-flex items-center gap-2 border border-white/12 bg-white/6 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
             >
               <i className="bi-arrow-left" aria-hidden="true" />
               All services
             </Link>
-            <div
-              className={`mt-8 flex h-16 w-16 items-center justify-center rounded-2xl ${service.color} text-3xl text-[#08080c]`}
-            >
+            <div className={`mt-8 flex h-16 w-16 items-center justify-center ${service.color} text-3xl text-[#08080c]`}>
               <i className={service.icon} aria-hidden="true" />
             </div>
             <p className="mt-8 text-sm font-black uppercase tracking-[0.24em] text-primary">
               {service.title}
             </p>
-            <h1 className="mt-5 max-w-4xl text-6xl font-black leading-none text-balance sm:text-7xl">
+            <h1 className="section-heading mt-5 max-w-4xl text-5xl font-black sm:text-6xl lg:text-7xl">
               {service.summary}
             </h1>
           </div>
@@ -52,7 +50,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
 
       <section className="bg-[#f3f0e8] px-6 py-28 text-[#08080c]">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <article className="rounded-[2rem] bg-[#f8f5ed] p-8 shadow-[0_24px_80px_rgba(0,0,0,0.08)]">
+          <article className="sharp-card bg-[#f8f5ed] p-8 shadow-[0_24px_80px_rgba(0,0,0,0.08)]">
             <p className="text-sm font-black uppercase tracking-[0.22em] text-[#5d4dff]">
               Focus areas
             </p>
@@ -60,7 +58,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               {service.items.map((item) => (
                 <div
                   key={item}
-                  className="rounded-2xl border border-[#08080c]/10 bg-white px-5 py-4 text-sm font-bold text-[#08080c]/72"
+                  className="border border-[#08080c]/10 bg-white px-5 py-4 text-sm font-bold text-[#08080c]/72"
                 >
                   {item}
                 </div>
@@ -68,7 +66,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             </div>
           </article>
 
-          <article className="rounded-[2rem] bg-[#08080c] p-8 text-white shadow-[0_24px_80px_rgba(0,0,0,0.18)]">
+          <article className="sharp-card bg-[#08080c] p-8 text-white shadow-[0_24px_80px_rgba(0,0,0,0.18)]">
             <p className="text-sm font-black uppercase tracking-[0.22em] text-primary">
               What we deliver
             </p>
@@ -76,9 +74,9 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               {service.details.map((detail) => (
                 <div
                   key={detail}
-                  className="flex gap-3 rounded-2xl border border-white/10 bg-white/6 px-5 py-4"
+                  className="flex gap-3 border border-white/10 bg-white/6 px-5 py-4"
                 >
-                  <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-primary" />
+                  <span className="mt-2 h-2 w-2 flex-shrink-0 bg-primary" />
                   <span className="text-sm leading-6 text-white/74">{detail}</span>
                 </div>
               ))}
@@ -88,7 +86,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       </section>
 
       <section className="bg-[#08080c] px-6 py-24">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 rounded-[2rem] border border-white/10 bg-white/6 p-8 lg:flex-row lg:items-center lg:p-10">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 border border-white/10 bg-white/6 p-8 lg:flex-row lg:items-center lg:p-10">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
               Next step
@@ -100,13 +98,13 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
+              className="sharp-button inline-flex items-center justify-center bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
             >
               Start now
             </Link>
             <Link
               href="/services"
-              className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/7 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-white/12"
+              className="sharp-button inline-flex items-center justify-center border border-white/12 bg-white/7 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-white/12"
             >
               Compare all services
             </Link>

@@ -24,21 +24,21 @@ export function ServicesDropdown() {
   return (
     <div ref={containerRef} className="relative">
       <button
-        className="rounded-full px-3 py-2 text-sm font-semibold text-white/68 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="px-3 py-2 text-sm font-semibold text-white/68 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         onClick={() => setIsOpen(!isOpen)}
       >
         Services
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full z-50 mt-3 w-[640px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#101018]/96 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
-          <div className="grid grid-cols-2 gap-3 p-4">
+        <div className="absolute right-0 top-full z-50 mt-3 w-[min(640px,calc(100vw-2rem))] overflow-hidden border border-white/10 bg-[#101018]/96 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
+          <div className="grid gap-3 p-4 sm:grid-cols-2">
             {SERVICES.map((service) => (
               <Link
                 key={service.id}
                 href={service.href}
                 onClick={() => setIsOpen(false)}
-                className="group rounded-2xl p-4 transition-colors hover:bg-white/8"
+                className="group p-4 transition-colors hover:bg-white/8"
               >
                 <div className="flex items-start gap-3">
                   <div

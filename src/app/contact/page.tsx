@@ -6,16 +6,16 @@ export default function Contact() {
   return (
     <main className="text-white">
       <section id="contact" className="video-section premium-grid px-6 pb-24 pt-36">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.78fr] lg:items-end">
-          <div className="video-copy video-panel rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10">
+        <div className="mx-auto grid max-w-7xl gap-12 xl:grid-cols-[1fr_0.78fr] xl:items-end">
+          <div className="video-copy video-panel sharp-panel px-6 py-8 sm:px-8 sm:py-10">
             <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
               Start here
             </p>
-            <h1 className="mt-5 text-6xl font-black leading-none text-balance sm:text-8xl">
+            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl xl:text-8xl">
               Build a business that feels controlled.
             </h1>
           </div>
-          <div className="video-copy rounded-[2rem] border border-white/10 bg-[#08080c]/62 p-6 backdrop-blur-xl">
+          <div className="video-copy sharp-card border border-white/10 bg-[#08080c]/62 p-6 backdrop-blur-xl">
             <p className="text-lg leading-8 text-white/68">
               If the work is scattered, the next move is structure. Send us a
               note and we will help identify the operating gaps worth fixing
@@ -24,13 +24,13 @@ export default function Contact() {
             <div className="mt-8 flex flex-col gap-3">
               <a
                 href="mailto:hello@formalize.co.za"
-                className="inline-flex justify-center rounded-full bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
+                className="sharp-button inline-flex justify-center bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
               >
                 Email Formalize
               </a>
               <Link
                 href="/services"
-                className="inline-flex justify-center rounded-full border border-white/12 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white/70 transition-colors hover:bg-white hover:text-[#08080c]"
+                className="sharp-button inline-flex justify-center border border-white/12 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white/70 transition-colors hover:bg-white hover:text-[#08080c]"
               >
                 Review services
               </Link>

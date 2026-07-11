@@ -28,12 +28,12 @@ export function HeroImageRotator() {
   }, []);
 
   return (
-    <div className="relative w-full min-h-[440px] flex items-center justify-center pointer-events-auto">
-      <div className="relative w-full h-[440px] flex items-center justify-center">
+    <div className="relative flex min-h-110 w-full items-end justify-center overflow-hidden pointer-events-auto">
+      <div className="relative flex h-110 w-full items-end justify-center overflow-hidden">
         {heroImages.map((image, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out flex items-center justify-center bg-white/5 ${
+            className={`absolute inset-0 flex items-end justify-center overflow-hidden bg-white/5 transition-opacity duration-1000 ease-in-out ${
               index === currentIndex ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -41,7 +41,7 @@ export function HeroImageRotator() {
               src={image.src}
               alt={image.label}
               fill
-              className="object-contain"
+              className="translate-y-2 scale-[1.03] object-contain object-bottom"
               priority={index === 0}
             />
           </div>

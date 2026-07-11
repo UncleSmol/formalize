@@ -28,15 +28,15 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(var(--primary-rgb),0.18),transparent_28%),radial-gradient(circle_at_88%_12%,rgba(119,106,255,0.24),transparent_30%),linear-gradient(180deg,rgba(8,8,12,0.08),#08080c_86%)]" />
         <div className="absolute left-1/2 top-28 h-px w-[90vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
-        <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-          <div className="video-copy video-panel animate-reveal-up rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10">
-            <p className="inline-flex rounded-full border border-white/12 bg-white/8 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-primary backdrop-blur">
+        <div className="relative mx-auto grid max-w-7xl gap-10 xl:grid-cols-[0.9fr_1.1fr] xl:items-end">
+          <div className="video-copy video-panel sharp-panel animate-reveal-up px-5 py-7 sm:px-8 sm:py-9 xl:max-w-none">
+            <p className="sharp-tag inline-flex border border-white/12 bg-white/8 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-primary backdrop-blur">
               Formalize / Business Operating Systems
             </p>
-            <h1 className="mt-7 max-w-5xl text-6xl font-black leading-[0.9] tracking-normal text-balance sm:text-7xl lg:text-8xl">
+            <h1 className="section-heading mt-7 max-w-[13ch] text-4xl font-black sm:text-5xl md:text-6xl lg:max-w-[15ch] lg:text-7xl xl:max-w-[11ch] xl:text-[6.5rem] 2xl:text-[7.5rem]">
               Business chaos, redesigned into momentum.
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/68 sm:text-xl">
+            <p className="mt-7 max-w-xl text-base leading-7 text-white/68 sm:text-lg sm:leading-8 lg:text-xl">
               We build the structure behind growing companies: finance,
               operations, technology, brand, people, and workspace systems that
               feel clear, premium, and usable.
@@ -44,7 +44,7 @@ export default function Home() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/contact"
-                className="group inline-flex items-center justify-center gap-3 rounded-full bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
+                className="sharp-button group inline-flex items-center justify-center gap-3 bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
               >
                 Start the build
                 <i
@@ -54,52 +54,57 @@ export default function Home() {
               </Link>
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center rounded-full border border-white/14 bg-white/7 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white backdrop-blur transition-colors hover:bg-white/12"
+                className="sharp-button inline-flex items-center justify-center border border-white/14 bg-white/7 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white backdrop-blur transition-colors hover:bg-white/12"
               >
                 View capabilities
               </Link>
             </div>
           </div>
 
-          <div className="relative min-h-[620px] lg:min-h-[680px]">
-            <div className="absolute right-0 top-0 w-[78%] overflow-hidden rounded-[2rem] border border-white/12 bg-white/8 p-3 shadow-[0_40px_120px_rgba(0,0,0,0.42)] backdrop-blur-xl">
+          <div className="relative xl:min-h-[680px]">
+            <div className="grid gap-4 sm:grid-cols-2 xl:block">
+              <div className="sharp-frame overflow-hidden border border-white/12 bg-white/8 p-2 shadow-[0_28px_80px_rgba(0,0,0,0.34)] backdrop-blur-xl sm:col-span-2 xl:absolute xl:right-0 xl:top-0 xl:w-[76%]">
               <Image
                 src={laptopHeroImage}
                 alt="Formalize digital systems preview"
-                className="h-auto w-full rounded-[1.35rem]"
+                className="aspect-[16/10] h-full w-full object-cover"
                 priority
               />
-            </div>
-            <div className="animate-drift absolute left-0 top-24 w-[58%] overflow-hidden rounded-[1.5rem] border border-white/12 bg-primary p-3 shadow-[0_30px_90px_rgba(var(--primary-rgb),0.16)]">
-              <Image
-                src={financeHeroImage}
-                alt="Finance systems preview"
-                className="h-auto w-full rounded-[1.05rem]"
-                priority
-              />
-            </div>
-            <div className="absolute bottom-10 right-8 w-[54%] overflow-hidden rounded-[1.5rem] border border-white/12 bg-[#11111a] p-3 shadow-[0_30px_90px_rgba(0,0,0,0.38)]">
-              <Image
-                src={processesHeroImage}
-                alt="Operations systems preview"
-                className="h-auto w-full rounded-[1.05rem]"
-              />
-            </div>
-            <div className="absolute bottom-24 left-4 max-w-[250px] rounded-[1.5rem] border border-white/12 bg-white/10 p-5 backdrop-blur-2xl">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/52">
-                Live operating layer
-              </p>
-              <div className="mt-5 space-y-3">
-                {SERVICES.slice(0, 4).map((service, index) => (
-                  <div key={service.id} className="flex items-center gap-3">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-primary">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm font-semibold text-white/78">
-                      {service.title}
-                    </span>
-                  </div>
-                ))}
+              </div>
+
+              <div className="sharp-frame animate-drift overflow-hidden border border-white/12 bg-primary p-2 shadow-[0_24px_70px_rgba(var(--primary-rgb),0.14)] xl:absolute xl:left-0 xl:top-24 xl:w-[52%]">
+                <Image
+                  src={financeHeroImage}
+                  alt="Finance systems preview"
+                  className="aspect-[4/5] h-full w-full object-cover"
+                  priority
+                />
+              </div>
+
+              <div className="sharp-frame overflow-hidden border border-white/12 bg-[#11111a] p-2 shadow-[0_24px_70px_rgba(0,0,0,0.32)] xl:absolute xl:bottom-10 xl:right-8 xl:w-[50%]">
+                <Image
+                  src={processesHeroImage}
+                  alt="Operations systems preview"
+                  className="aspect-[4/5] h-full w-full object-cover"
+                />
+              </div>
+
+              <div className="sharp-card border border-white/12 bg-white/10 p-5 backdrop-blur-2xl xl:absolute xl:bottom-24 xl:left-4 xl:max-w-[250px]">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/52">
+                  Live operating layer
+                </p>
+                <div className="mt-5 space-y-3">
+                  {SERVICES.slice(0, 4).map((service, index) => (
+                    <div key={service.id} className="flex items-center gap-3">
+                      <span className="flex h-7 w-7 items-center justify-center border border-white/12 bg-white/10 text-xs font-bold text-primary">
+                        {index + 1}
+                      </span>
+                      <span className="text-sm font-semibold text-white/78">
+                        {service.title}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -132,7 +137,7 @@ export default function Home() {
                 One partner for the parts that usually drift apart.
               </h2>
             </div>
-            <div className="grid gap-px overflow-hidden rounded-[2rem] border border-[#08080c]/10 bg-[#08080c]/10 md:grid-cols-2">
+            <div className="grid gap-px overflow-hidden border border-[#08080c]/10 bg-[#08080c]/10 md:grid-cols-2">
               {SERVICES.map((service, index) => (
                 <Link
                   key={service.id}
@@ -174,7 +179,7 @@ export default function Home() {
             </div>
             <Link
               href="/services/it-products"
-              className="inline-flex w-fit rounded-full border border-white/12 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white/70 transition-colors hover:bg-white hover:text-[#08080c]"
+              className="sharp-button inline-flex w-fit border border-white/12 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white/70 transition-colors hover:bg-white hover:text-[#08080c]"
             >
               Browse IT catalogue
             </Link>
@@ -185,9 +190,9 @@ export default function Home() {
               (image, index) => (
                 <div
                   key={image.src}
-                  className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-5"
+                  className="group sharp-card overflow-hidden border border-white/10 bg-white/6 p-5"
                 >
-                  <div className="overflow-hidden rounded-[1.35rem] bg-[#f3f0e8]">
+                  <div className="sharp-frame overflow-hidden bg-[#f3f0e8]">
                     <Image
                       src={image}
                       alt={`Formalize output preview ${index + 1}`}
@@ -223,7 +228,7 @@ export default function Home() {
             </div>
             <Link
               href="/contact"
-              className="mt-9 inline-flex rounded-full bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
+              className="sharp-button mt-9 inline-flex bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
             >
               Formalize the business
             </Link>

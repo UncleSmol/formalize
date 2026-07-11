@@ -15,12 +15,12 @@ export default function Services() {
   return (
     <main className="text-white">
       <section id="services" className="video-section premium-grid px-6 pb-24 pt-36">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-          <div className="video-copy video-panel rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10">
+        <div className="mx-auto grid max-w-7xl gap-12 xl:grid-cols-[0.9fr_1.1fr] xl:items-end">
+          <div className="video-copy video-panel sharp-panel px-6 py-8 sm:px-8 sm:py-10">
             <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
               Services
             </p>
-            <h1 className="mt-5 text-6xl font-black leading-none text-balance sm:text-7xl">
+            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl">
               A complete operating stack for modern businesses.
             </h1>
           </div>
@@ -34,7 +34,7 @@ export default function Services() {
 
       <section className="bg-[#f3f0e8] px-6 py-28 text-[#08080c]">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-px overflow-hidden rounded-[2rem] border border-[#08080c]/10 bg-[#08080c]/10">
+          <div className="grid gap-px overflow-hidden border border-[#08080c]/10 bg-[#08080c]/10">
             {SERVICES.map((service, index) => (
               <article
                 key={service.id}
@@ -46,7 +46,7 @@ export default function Services() {
                     0{index + 1}
                   </p>
                   <div
-                    className={`mt-0 flex h-14 w-14 items-center justify-center rounded-full ${service.color} text-2xl text-[#08080c] lg:mt-10`}
+                    className={`mt-0 flex h-14 w-14 items-center justify-center ${service.color} text-2xl text-[#08080c] lg:mt-10`}
                   >
                     <i className={service.icon} aria-hidden="true" />
                   </div>
@@ -91,7 +91,7 @@ export default function Services() {
             </div>
             <Link
               href="/services/it-products"
-              className="inline-flex w-fit rounded-full bg-white px-6 py-3 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
+              className="sharp-button inline-flex w-fit bg-white px-6 py-3 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
             >
               IT product catalogue
             </Link>
@@ -100,12 +100,12 @@ export default function Services() {
             {featuredImages.map((item) => (
               <div
                 key={item.alt}
-                className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-4"
+                className="sharp-frame overflow-hidden border border-white/10 bg-white/6 p-4"
               >
                 <Image
                   src={item.image}
                   alt={item.alt}
-                  className="h-auto w-full rounded-[1.35rem]"
+                  className="h-auto w-full"
                 />
               </div>
             ))}
@@ -121,7 +121,7 @@ export default function Services() {
           </h2>
           <Link
             href="/contact"
-            className="inline-flex w-fit rounded-full bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
+            className="sharp-button inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
           >
             Start now
           </Link>

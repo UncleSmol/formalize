@@ -31,7 +31,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
     <div className="relative z-[1001] md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative z-[1002] rounded-full border border-white/12 bg-white/6 p-2 text-white shadow-[0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-md transition-colors hover:bg-white/10"
+        className="relative z-[1002] border border-white/12 bg-white/6 p-2 text-white shadow-[0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-md transition-colors hover:bg-white/10"
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
         aria-controls="mobile-navigation"
@@ -66,7 +66,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
 
               <button
                 onClick={() => setIsOpen(false)}
-                className="fixed right-6 top-6 z-[1010] rounded-full border border-white/12 bg-white/6 p-2 text-white shadow-[0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-md transition-colors hover:bg-white/10"
+                className="fixed right-6 top-6 z-[1010] border border-white/12 bg-white/6 p-2 text-white shadow-[0_10px_30px_rgba(0,0,0,0.22)] backdrop-blur-md transition-colors hover:bg-white/10"
                 aria-label="Close menu"
                 aria-expanded={isOpen}
                 aria-controls="mobile-navigation"
@@ -84,7 +84,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
                 className="fixed inset-0 z-[990] overflow-y-auto bg-[#101018]/94 backdrop-blur-2xl hide-scrollbar"
               >
                 <div className="flex min-h-full flex-col px-3 pb-3 pt-24">
-                  <div className="flex flex-1 flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,16,24,0.98),rgba(10,10,16,0.94))] shadow-[0_24px_80px_rgba(0,0,0,0.44)]">
+                  <div className="flex flex-1 flex-col overflow-hidden border border-white/10 bg-[linear-gradient(180deg,rgba(16,16,24,0.98),rgba(10,10,16,0.94))] shadow-[0_24px_80px_rgba(0,0,0,0.44)]">
                     <div className="border-b border-white/10 px-6 py-5">
                       <p className="text-xs font-black uppercase tracking-[0.28em] text-primary">
                         Navigation
@@ -100,7 +100,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
                           key={link.href}
                           href={link.href}
                           onClick={() => setIsOpen(false)}
-                          className="rounded-2xl border border-white/8 bg-white/[0.03] px-5 py-4 text-base font-semibold text-white/72 transition-colors hover:bg-white/8 hover:text-white"
+                          className="border border-white/8 bg-white/[0.03] px-5 py-4 text-base font-semibold text-white/72 transition-colors hover:bg-white/8 hover:text-white"
                         >
                           {link.label}
                         </Link>
@@ -108,7 +108,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
 
                       <button
                         onClick={() => setIsServicesOpen(!isServicesOpen)}
-                        className="flex w-full items-center justify-between rounded-2xl border border-white/8 bg-white/[0.03] px-5 py-4 text-base font-semibold text-white/72 transition-colors hover:bg-white/8 hover:text-white"
+                        className="flex w-full items-center justify-between border border-white/8 bg-white/[0.03] px-5 py-4 text-base font-semibold text-white/72 transition-colors hover:bg-white/8 hover:text-white"
                         type="button"
                       >
                         Services
@@ -121,7 +121,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
                       </button>
 
                       {isServicesOpen && (
-                        <div className="mx-1 flex flex-col gap-2 rounded-2xl border border-white/8 bg-white/[0.04] p-2">
+                        <div className="mx-1 flex flex-col gap-2 border border-white/8 bg-white/[0.04] p-2">
                           {SERVICES.map((service) => (
                             <Link
                               key={service.id}
@@ -130,7 +130,7 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
                                 setIsServicesOpen(false);
                                 setIsOpen(false);
                               }}
-                              className="rounded-xl px-4 py-3 text-sm font-semibold text-white/60 transition-colors hover:translate-x-1 hover:bg-white/8 hover:text-primary"
+                              className="px-4 py-3 text-sm font-semibold text-white/60 transition-colors hover:translate-x-1 hover:bg-white/8 hover:text-primary"
                             >
                               {service.title}
                             </Link>

@@ -19,7 +19,7 @@ export default function ITProducts() {
             <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
               IT Catalogue
             </p>
-            <h1 className="mt-5 text-6xl font-black leading-none text-balance sm:text-7xl">
+            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl">
               Technology products with an implementation brain.
             </h1>
           </div>
@@ -40,7 +40,7 @@ export default function ITProducts() {
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`rounded-full px-5 py-3 text-sm font-black transition-colors ${
+                className={`sharp-button px-5 py-3 text-sm font-black transition-colors ${
                   selectedCategory === null
                     ? "bg-[#08080c] text-white"
                     : "bg-white text-[#08080c]/58 hover:bg-primary hover:text-[#08080c]"
@@ -53,7 +53,7 @@ export default function ITProducts() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`rounded-full px-5 py-3 text-sm font-black transition-colors ${
+                  className={`sharp-button px-5 py-3 text-sm font-black transition-colors ${
                     selectedCategory === category
                       ? "bg-[#08080c] text-white"
                       : "bg-white text-[#08080c]/58 hover:bg-primary hover:text-[#08080c]"
@@ -66,7 +66,7 @@ export default function ITProducts() {
             </div>
           </div>
 
-          <div className="grid gap-px overflow-hidden rounded-[2rem] border border-[#08080c]/10 bg-[#08080c]/10 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-px overflow-hidden border border-[#08080c]/10 bg-[#08080c]/10 md:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((product) => (
               <article
                 key={product.id}
@@ -74,11 +74,11 @@ export default function ITProducts() {
               >
                 <div className="flex items-start justify-between gap-6">
                   <div
-                    className={`flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br ${product.color} text-2xl text-white`}
+                    className={`flex h-14 w-14 items-center justify-center bg-gradient-to-br ${product.color} text-2xl text-white`}
                   >
                     <i className={product.icon} aria-hidden="true" />
                   </div>
-                  <p className="rounded-full border border-[#08080c]/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#08080c]/46 group-hover:border-white/12 group-hover:text-white/50">
+                  <p className="sharp-chip border border-[#08080c]/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#08080c]/46 group-hover:border-white/12 group-hover:text-white/50">
                     {product.category}
                   </p>
                 </div>
@@ -105,7 +105,7 @@ export default function ITProducts() {
                   </span>
                   <Link
                     href="/contact"
-                    className="rounded-full bg-[#08080c] px-4 py-2 text-xs font-black uppercase tracking-wide text-white transition-colors group-hover:bg-primary group-hover:text-[#08080c]"
+                    className="sharp-button bg-[#08080c] px-4 py-2 text-xs font-black uppercase tracking-wide text-white transition-colors group-hover:bg-primary group-hover:text-[#08080c]"
                   >
                     Inquire
                   </Link>
@@ -131,7 +131,7 @@ export default function ITProducts() {
           </h2>
           <Link
             href="/contact"
-            className="inline-flex w-fit rounded-full bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
+            className="sharp-button inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
           >
             Get in touch
           </Link>

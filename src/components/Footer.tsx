@@ -38,13 +38,14 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link
               href="/"
-              className="inline-block rounded-full bg-white px-4 py-3"
+              className="inline-block bg-white px-4 py-3"
             >
               <Image
                 src="/Formalize-Logo.png"
                 alt="Formalize"
                 width={120}
                 height={32}
+                style={{ height: "auto" }}
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">

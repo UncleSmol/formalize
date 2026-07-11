@@ -1,0 +1,2 @@
+-- Intentionally empty for now.
+-- Catalogue seed data will be added after the core schema and RLS policies are in place.
