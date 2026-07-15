@@ -89,14 +89,15 @@ export default async function CatalogueDetailPage({
             </div>
 
             {item.hero_image_url && (
-              <div className="sharp-frame overflow-hidden border border-white/10 bg-white/6">
-                <img
-                  src={item.hero_image_url}
-                  alt={item.title}
-                  className="h-auto w-full object-cover"
-                />
-              </div>
-            )}
+                    <div className="sharp-frame overflow-hidden border border-white/10 bg-white/6">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.hero_image_url}
+                        alt={item.title}
+                        className="h-auto w-full object-cover"
+                      />
+                    </div>
+                  )}
           </div>
         </div>
       </section>

@@ -142,10 +142,8 @@ function normaliseItem(raw: Record<string, unknown>): CatalogueItemWithRelations
 
   const rawSections = raw.sections as Record<string, unknown>[] | undefined;
 
-  const { categories: _c, sections: _s, ...rest } = raw;
-
   return {
-    ...(rest as unknown as CatalogueItemWithRelations),
+    ...(raw as unknown as CatalogueItemWithRelations),
     categories: (rawCategories ?? []).map(
       (jc) => jc.category as unknown as CatalogueItemWithRelations["categories"][0],
     ),

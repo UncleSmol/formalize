@@ -33,6 +33,7 @@ export function CatalogueSections({ sections }: CatalogueSectionsProps) {
                   )}
                   {section.media_url && (
                     <div className="sharp-frame mt-6 overflow-hidden border border-[#08080c]/10 bg-white/6">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={section.media_url}
                         alt={section.heading ?? ""}
