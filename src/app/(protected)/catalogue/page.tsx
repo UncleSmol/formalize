@@ -2,12 +2,13 @@ import { Suspense } from "react";
 import { getPublishedCatalogueItems, getCategories } from "@/lib/supabase/queries";
 import { CatalogueGrid } from "@/components/catalogue/CatalogueGrid";
 import { CatalogueFilterBar } from "@/components/catalogue/CatalogueFilterBar";
-import type { CatalogueItemType } from "@/lib/supabase/types";
+import { Pagination } from "@/components/catalogue/Pagination";
 
 interface CataloguePageProps {
   searchParams: Promise<{
     category?: string;
     type?: string;
+    page?: string;
   }>;
 }
 
@@ -18,20 +19,18 @@ export const metadata = {
 };
 
 export default async function CataloguePage({ searchParams }: CataloguePageProps) {
-  const { category: categorySlug, type } = await searchParams;
+  const { category: categorySlug, type, page: pageStr } = await searchParams;
+  const page = Math.max(1, parseInt(pageStr ?? "1", 10) || 1);
 
-  const [items, categories] = await Promise.all([
+  const [result, categories] = await Promise.all([
     getPublishedCatalogueItems({
-      type: type as CatalogueItemType | undefined,
+      type: type as "service" | "product" | "resource" | undefined,
+      categorySlug,
+      page,
+      pageSize: 9,
     }),
     getCategories(),
   ]);
-
-  const filteredItems = categorySlug
-    ? items.filter((item) =>
-        item.categories.some((cat) => cat.slug === categorySlug),
-      )
-    : items;
 
   return (
     <main className="text-white">
@@ -66,9 +65,16 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
           </div>
 
           <CatalogueGrid
-            items={filteredItems}
+            items={result.items}
             variant="light"
             emptyMessage="No items match the selected filter."
+          />
+
+          <Pagination
+            currentPage={result.page}
+            totalPages={result.totalPages}
+            total={result.total}
+            pageSize={result.pageSize}
           />
         </div>
       </section>

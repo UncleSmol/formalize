@@ -3,13 +3,62 @@ import "server-only";
 import { createServiceRoleClient } from "./client";
 import type { CatalogueItemWithRelations, Category } from "./types";
 
+export interface PaginatedResult<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export async function getPublishedCatalogueItems(filters?: {
   type?: string;
-  categoryId?: string;
-}): Promise<CatalogueItemWithRelations[]> {
+  categorySlug?: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<PaginatedResult<CatalogueItemWithRelations>> {
   const supabase = createServiceRoleClient();
 
-  let query = supabase
+  const page = Math.max(1, filters?.page ?? 1);
+  const pageSize = Math.min(100, Math.max(1, filters?.pageSize ?? 9));
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  // Resolve category slug to ID if provided
+  let categoryId: string | undefined;
+  if (filters?.categorySlug) {
+    const { data: cat } = await supabase
+      .from("categories")
+      .select("id")
+      .eq("slug", filters.categorySlug)
+      .single();
+    categoryId = cat?.id;
+  }
+
+  // Count query
+  let countQuery = supabase
+    .from("catalogue_items")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "published");
+
+  if (filters?.type) {
+    countQuery = countQuery.eq("item_type", filters.type);
+  }
+
+  if (categoryId) {
+    countQuery = countQuery.contains("catalogue_item_categories", [
+      { category_id: categoryId },
+    ]);
+  }
+
+  const { count: total, error: countError } = await countQuery;
+
+  if (countError) {
+    throw new Error(`Failed to count catalogue items: ${countError.message}`);
+  }
+
+  // Data query
+  let dataQuery = supabase
     .from("catalogue_items")
     .select(
       `
@@ -22,25 +71,32 @@ export async function getPublishedCatalogueItems(filters?: {
     )
     .eq("status", "published")
     .order("sort_order", { ascending: true })
-    .order("title", { ascending: true });
+    .order("title", { ascending: true })
+    .range(from, to);
 
   if (filters?.type) {
-    query = query.eq("item_type", filters.type);
+    dataQuery = dataQuery.eq("item_type", filters.type);
   }
 
-  if (filters?.categoryId) {
-    query = query.contains("catalogue_item_categories", [
-      { category_id: filters.categoryId },
+  if (categoryId) {
+    dataQuery = dataQuery.contains("catalogue_item_categories", [
+      { category_id: categoryId },
     ]);
   }
 
-  const { data, error } = await query;
+  const { data, error } = await dataQuery;
 
   if (error) {
     throw new Error(`Failed to fetch catalogue items: ${error.message}`);
   }
 
-  return (data ?? []).map(normaliseItem);
+  return {
+    items: (data ?? []).map(normaliseItem),
+    total: total ?? 0,
+    page,
+    pageSize,
+    totalPages: Math.ceil((total ?? 0) / pageSize),
+  };
 }
 
 export async function getCatalogueItemBySlug(

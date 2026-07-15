@@ -3,8 +3,8 @@ import { getPublishedCatalogueItems } from "@/lib/supabase/queries";
 import { CatalogueCard } from "@/components/catalogue/CatalogueCard";
 
 export async function FeaturedProducts() {
-  const items = await getPublishedCatalogueItems({ type: "product" });
-  const featured = items.slice(0, 4);
+  const { items } = await getPublishedCatalogueItems({ type: "product", pageSize: 4 });
+  const featured = items;
 
   if (featured.length === 0) return null;
 

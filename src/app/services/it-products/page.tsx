@@ -3,26 +3,28 @@ import Link from "next/link";
 import { getPublishedCatalogueItems, getCategories } from "@/lib/supabase/queries";
 import { CatalogueGrid } from "@/components/catalogue/CatalogueGrid";
 import { CatalogueFilterBar } from "@/components/catalogue/CatalogueFilterBar";
+import { Pagination } from "@/components/catalogue/Pagination";
 
 interface ITProductsPageProps {
   searchParams: Promise<{
     category?: string;
+    page?: string;
   }>;
 }
 
 export default async function ITProducts({ searchParams }: ITProductsPageProps) {
-  const { category: categorySlug } = await searchParams;
+  const { category: categorySlug, page: pageStr } = await searchParams;
+  const page = Math.max(1, parseInt(pageStr ?? "1", 10) || 1);
 
-  const [items, categories] = await Promise.all([
-    getPublishedCatalogueItems({ type: "product" }),
+  const [result, categories] = await Promise.all([
+    getPublishedCatalogueItems({
+      type: "product",
+      categorySlug,
+      page,
+      pageSize: 9,
+    }),
     getCategories(),
   ]);
-
-  const filteredItems = categorySlug
-    ? items.filter((item) =>
-        item.categories.some((cat) => cat.slug === categorySlug),
-      )
-    : items;
 
   return (
     <main className="bg-[#08080c] text-white">
@@ -58,9 +60,16 @@ export default async function ITProducts({ searchParams }: ITProductsPageProps) 
           </div>
 
           <CatalogueGrid
-            items={filteredItems}
+            items={result.items}
             variant="light"
             emptyMessage="No products found in this category."
+          />
+
+          <Pagination
+            currentPage={result.page}
+            totalPages={result.totalPages}
+            total={result.total}
+            pageSize={result.pageSize}
           />
         </div>
       </section>
