@@ -1,13 +1,13 @@
 import "server-only";
 
-import { createClient } from "./client";
+import { createServiceRoleClient } from "./client";
 import type { CatalogueItemWithRelations, Category } from "./types";
 
 export async function getPublishedCatalogueItems(filters?: {
   type?: string;
   categoryId?: string;
 }): Promise<CatalogueItemWithRelations[]> {
-  const supabase = createClient();
+  const supabase = createServiceRoleClient();
 
   let query = supabase
     .from("catalogue_items")
@@ -46,7 +46,7 @@ export async function getPublishedCatalogueItems(filters?: {
 export async function getCatalogueItemBySlug(
   slug: string,
 ): Promise<CatalogueItemWithRelations | null> {
-  const supabase = createClient();
+  const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from("catalogue_items")
@@ -72,7 +72,7 @@ export async function getCatalogueItemBySlug(
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const supabase = createClient();
+  const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from("categories")
@@ -93,7 +93,7 @@ export async function getRelatedItems(
 ): Promise<CatalogueItemWithRelations[]> {
   if (categoryIds.length === 0) return [];
 
-  const supabase = createClient();
+  const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from("catalogue_items")
@@ -120,7 +120,7 @@ export async function getRelatedItems(
 }
 
 export async function getAllPublishedSlugs(): Promise<string[]> {
-  const supabase = createClient();
+  const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from("catalogue_items")

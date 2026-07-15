@@ -15,7 +15,7 @@ for (const line of envRaw.trim().split("\n")) {
 }
 
 const url = env.NEXT_PUBLIC_SUPABASE_URL;
-const key = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const key = env.NEXT_PUBLIC_PUBLIC_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 console.log("URL:", JSON.stringify(url));
 console.log("Key prefix:", JSON.stringify(key?.substring(0, 25) + "..."));
