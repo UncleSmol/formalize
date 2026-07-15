@@ -1,0 +1,11 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "indexing": {
+    "enabled": true,
+    "provider": "kilo",
+    "model": "mistralai/codestral-embed-2505"
+  },
+  "commit_message": {
+    "prompt": ""
+  }
+}

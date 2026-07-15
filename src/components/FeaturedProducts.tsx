@@ -1,54 +1,39 @@
-"use client";
-
 import Link from "next/link";
-import { IT_PRODUCTS } from "@/lib/it-products";
+import { getPublishedCatalogueItems } from "@/lib/supabase/queries";
+import { CatalogueCard } from "@/components/catalogue/CatalogueCard";
 
-export function FeaturedProducts() {
-  const featuredProducts = IT_PRODUCTS.slice(0, 4);
+export async function FeaturedProducts() {
+  const items = await getPublishedCatalogueItems({ type: "product" });
+  const featured = items.slice(0, 4);
+
+  if (featured.length === 0) return null;
 
   return (
-    <div>
-      <div className="mb-12">
-        <p className="text-sm font-semibold text-[#2aa19d] uppercase tracking-wide">
-          IT Products
-        </p>
-        <h3 className="mt-3 text-3xl font-bold text-[#17142a]">
-          Tools to power your business
-        </h3>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2">
-        {featuredProducts.map((product) => (
-          <div
-            key={product.id}
-            className="rounded-lg bg-white p-6 border border-[#e0dce6] hover:border-[#2aa19d] transition-colors"
-          >
-            <div
-              className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-[#f5f5f5] text-xl"
-            >
-              <i className={product.icon} aria-hidden="true" />
-            </div>
-
-            <h4 className="mt-4 font-semibold text-[#17142a]">{product.name}</h4>
-            <p className="mt-2 text-sm text-[#4c466b]">{product.description}</p>
-
-            <div className="mt-4 border-t border-[#e0dce6] pt-4">
-              <span className="text-sm font-medium text-[#2aa19d]">
-                {product.price}
-              </span>
-            </div>
+    <section className="bg-[#08080c] px-6 py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
+              IT Products
+            </p>
+            <h2 className="mt-5 max-w-3xl text-4xl font-black leading-none text-balance sm:text-5xl">
+              Tools to power your business
+            </h2>
           </div>
-        ))}
-      </div>
+          <Link
+            href="/services/it-products"
+            className="sharp-button inline-flex w-fit border border-white/12 bg-white/7 px-6 py-3 text-sm font-black uppercase tracking-wide text-white transition-colors hover:bg-white/12"
+          >
+            View all products
+          </Link>
+        </div>
 
-      <div className="mt-12">
-        <Link
-          href="/services/it-products"
-          className="inline-block px-6 py-3 bg-[#2aa19d] text-white font-medium rounded-lg hover:bg-[#229385] transition-colors"
-        >
-          View All Products
-        </Link>
+        <div className="grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-4">
+          {featured.map((item) => (
+            <CatalogueCard key={item.id} item={item} variant="dark" />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

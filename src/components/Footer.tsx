@@ -5,7 +5,10 @@ import { SERVICES } from "@/lib/services";
 const FOOTER_LINKS = [
   {
     heading: "Services",
-    links: SERVICES.map((service) => ({ label: service.title, href: service.href })),
+    links: [
+      { label: "Catalogue", href: "/catalogue" },
+      ...SERVICES.map((service) => ({ label: service.title, href: service.href })),
+    ],
   },
   {
     heading: "Company",
