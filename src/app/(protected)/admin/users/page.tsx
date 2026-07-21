@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin-guard";
+import { logAdminAction } from "@/lib/audit";
 import { createServiceRoleClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/supabase/types";
 
@@ -29,6 +30,8 @@ async function updateRole(formData: FormData) {
 
   const supabase = createServiceRoleClient();
   await supabase.from("profiles").update({ role: role as Profile["role"] }).eq("id", id);
+
+  logAdminAction("update_role", "profile", id, { new_role: role });
 
   redirect("/admin/users");
 }

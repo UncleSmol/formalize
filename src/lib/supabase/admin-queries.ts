@@ -2,6 +2,7 @@ import "server-only";
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin-guard";
+import { logAdminAction } from "@/lib/audit";
 import { createServiceRoleClient } from "./client";
 import type {
   CatalogueItem,
@@ -102,6 +103,9 @@ export async function createCatalogueItem(input: CreateItemInput) {
   }
 
   revalidatePath("/admin/catalogue");
+
+  logAdminAction("create", "catalogue_item", data.id, { title: input.title });
+
   return data.id;
 }
 
@@ -144,6 +148,8 @@ export async function updateCatalogueItem(
 
   revalidatePath("/admin/catalogue");
   revalidatePath("/catalogue");
+
+  logAdminAction("update", "catalogue_item", id, { updated: Object.keys(input) });
 }
 
 export async function deleteCatalogueItem(id: string) {
@@ -159,6 +165,8 @@ export async function deleteCatalogueItem(id: string) {
 
   revalidatePath("/admin/catalogue");
   revalidatePath("/catalogue");
+
+  logAdminAction("delete", "catalogue_item", id);
 }
 
 /* ─── Categories ──────────────────────────────────────────── */
@@ -177,6 +185,8 @@ export async function createCategory(input: {
 
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
+
+  logAdminAction("create", "category", input.slug, { name: input.name });
 }
 
 export async function updateCategory(id: string, input: Partial<{ slug: string; name: string; description: string }>) {
@@ -189,6 +199,8 @@ export async function updateCategory(id: string, input: Partial<{ slug: string; 
 
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
+
+  logAdminAction("update", "category", id, { updated: Object.keys(input) });
 }
 
 export async function deleteCategory(id: string) {
@@ -201,6 +213,8 @@ export async function deleteCategory(id: string) {
 
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
+
+  logAdminAction("delete", "category", id);
 }
 
 /* ─── Enquiries ───────────────────────────────────────────── */
@@ -243,4 +257,6 @@ export async function updateEnquiryStatus(
   if (error) throw new Error(`Failed to update enquiry: ${error.message}`);
 
   revalidatePath("/admin/enquiries");
+
+  logAdminAction("update", "enquiry", id, { status });
 }

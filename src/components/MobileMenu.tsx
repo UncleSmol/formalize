@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createBrowserClient } from "@/lib/supabase/browser";
 import { SERVICES } from "@/lib/services";
+import type { User } from "@supabase/supabase-js";
 
 interface NavLink {
   label: string;
@@ -15,8 +18,23 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ navLinks, authLinks }: MobileMenuProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const supabase = createBrowserClient();
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data?.user ?? null);
+      setLoading(false);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => listener?.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -29,11 +47,19 @@ export function MobileMenu({ navLinks, authLinks }: MobileMenuProps) {
     };
   }, [isOpen]);
 
+  async function handleSignOut() {
+    const supabase = createBrowserClient();
+    await supabase.auth.signOut();
+    setIsOpen(false);
+    router.push("/");
+    router.refresh();
+  }
+
   return (
     <div className="md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative z-[1020] flex h-10 w-10 items-center justify-center text-white"
+        className="relative z-[1020] flex h-10 w-10 items-center justify-center"
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
         aria-controls="mobile-navigation"
@@ -41,18 +67,18 @@ export function MobileMenu({ navLinks, authLinks }: MobileMenuProps) {
       >
         <div className="flex h-5 w-5 flex-col gap-1">
           <span
-            className={`h-0.5 w-full bg-white transition-all duration-300 ${
-              isOpen ? "translate-y-1.5 rotate-45" : ""
+            className={`h-0.5 w-full transition-all duration-300 ${
+              isOpen ? "translate-y-1.5 rotate-45 bg-primary" : "bg-black"
             }`}
           />
           <span
-            className={`h-0.5 w-full bg-white transition-all duration-300 ${
-              isOpen ? "opacity-0" : ""
+            className={`h-0.5 w-full transition-all duration-300 ${
+              isOpen ? "opacity-0 bg-primary" : "bg-black"
             }`}
           />
           <span
-            className={`h-0.5 w-full bg-white transition-all duration-300 ${
-              isOpen ? "-translate-y-1.5 -rotate-45" : ""
+            className={`h-0.5 w-full transition-all duration-300 ${
+              isOpen ? "-translate-y-1.5 -rotate-45 bg-primary" : "bg-black"
             }`}
           />
         </div>
@@ -70,25 +96,44 @@ export function MobileMenu({ navLinks, authLinks }: MobileMenuProps) {
             className="fixed inset-y-0 right-0 z-[1010] w-full max-w-sm overflow-y-auto bg-[#101018] px-6 pb-6 pt-20 shadow-2xl"
           >
             <div className="flex flex-col gap-1">
-              {authLinks && (
+              {!loading && (
                 <>
-                  <div className="flex gap-2 px-4 pb-4">
-                    {authLinks.map((link) => (
+                  {user ? (
+                    <div className="flex gap-2 px-4 pb-4">
                       <Link
-                        key={link.href}
-                        href={link.href}
+                        href="/account/profile"
                         onClick={() => setIsOpen(false)}
-                        className={`flex-1 px-4 py-3 text-center text-sm font-black uppercase tracking-wide ${
-                          link.href === "/signup"
-                            ? "bg-primary text-[#08080c]"
-                            : "border border-white/20 text-white"
-                        }`}
+                        className="flex flex-1 items-center justify-center gap-2 border border-white/20 px-4 py-3 text-sm font-black uppercase tracking-wide text-white"
                       >
-                        {link.label}
+                        <i className="bi-person text-sm" aria-hidden="true" />
+                        Profile
                       </Link>
-                    ))}
-                  </div>
-                  <hr className="mx-4 border-white/10" />
+                      <button
+                        onClick={handleSignOut}
+                        className="flex-1 px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-red-400 transition-colors hover:bg-white/5"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  ) : authLinks ? (
+                    <div className="flex gap-2 px-4 pb-4">
+                      {authLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setIsOpen(false)}
+                          className={`flex-1 px-4 py-3 text-center text-sm font-black uppercase tracking-wide ${
+                            link.href === "/signup"
+                              ? "bg-primary text-[#08080c]"
+                              : "border border-white/20 text-white"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                  {user && <hr className="mx-4 border-white/10" />}
                 </>
               )}
 

@@ -3,6 +3,8 @@
 import { createServiceRoleClient } from "@/lib/supabase/client";
 import { sendContactEmail } from "@/lib/email";
 import { contactSchema } from "@/lib/validations/contact";
+import { rateLimit } from "@/lib/rate-limit";
+import { stripHtml } from "@/lib/sanitize";
 
 export interface ContactFormState {
   success?: boolean;
@@ -21,6 +23,15 @@ export async function submitContactForm(
     message: formData.get("message"),
   };
 
+  const emailRaw = formData.get("email") as string;
+  const { allowed } = rateLimit(`contact:${emailRaw}`, {
+    maxRequests: 3,
+    windowMs: 300_000,
+  });
+  if (!allowed) {
+    return { error: "Too many submissions. Please try again later." };
+  }
+
   const result = contactSchema.safeParse(raw);
 
   if (!result.success) {
@@ -31,22 +42,26 @@ export async function submitContactForm(
   }
 
   const { name, email, subject, message } = result.data;
+  const sanitized = {
+    name: stripHtml(name),
+    email: stripHtml(email),
+    subject: stripHtml(subject),
+    message: stripHtml(message),
+  };
 
   try {
     const supabase = createServiceRoleClient();
 
     const { error: dbError } = await supabase
       .from("contact_submissions")
-      .insert({ name, email, subject, message });
+      .insert(sanitized);
 
     if (dbError) {
       console.error("[contact] DB insert error:", dbError);
       return { error: "Failed to save your message. Please try again." };
     }
 
-    console.log("[contact] DB saved, sending email...");
-    await sendContactEmail({ name, email, subject, message });
-    console.log("[contact] Email sent successfully");
+    await sendContactEmail(sanitized);
 
     return { success: true };
   } catch (err) {

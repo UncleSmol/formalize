@@ -58,7 +58,7 @@ export default function UpdatePasswordPage() {
           )}
 
           <div>
-            <PasswordInput id="password" label="New Password" minLength={6} />
+            <PasswordInput id="password" label="New Password" minLength={8} />
             {fieldError && (
               <p className="mt-1 text-xs text-red-400">{fieldError}</p>
             )}

@@ -117,14 +117,14 @@ export function SignupForm() {
           type="email"
           required
           className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
-          placeholder="doctor@formalize.co.za"
+          placeholder="you@company.com"
         />
         {fieldErrors.email && (
           <p className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>
         )}
       </div>
 
-      <PasswordInput id="password" label="Password" placeholder="At least 6 characters" minLength={6} />
+      <PasswordInput id="password" label="Password" placeholder="At least 8 characters" minLength={8} />
       {fieldErrors.password && (
         <p className="-mt-3 text-xs text-red-400">{fieldErrors.password}</p>
       )}

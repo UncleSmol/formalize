@@ -120,7 +120,7 @@ export default function Home() {
 
       <FeaturedProducts />
 
-      <section className="bg-foreground/[0.02] px-6 py-24">
+      <section className="bg-background px-6 py-24">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div className="max-w-2xl">
             <h2 className="section-heading text-4xl font-black leading-none sm:text-5xl">

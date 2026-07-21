@@ -3,7 +3,9 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createServiceRoleClient } from "./supabase/client";
 
-export async function requireAdmin() {
+import type { User } from "@supabase/supabase-js";
+
+export async function requireAdmin(): Promise<User> {
   const cookieStore = await cookies();
 
   const supabase = createServerClient(
@@ -38,4 +40,6 @@ export async function requireAdmin() {
   if (!profile || profile.role !== "admin") {
     throw new Error("Not authorized. Admin access required.");
   }
+
+  return user;
 }
