@@ -1,6 +1,7 @@
 import "server-only";
 
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/admin-guard";
 import { createServiceRoleClient } from "./client";
 import type {
   CatalogueItem,
@@ -13,11 +14,13 @@ import type {
 /* ─── Catalogue Items ────────────────────────────────────── */
 
 export async function getAllCatalogueItems(): Promise<CatalogueItem[]> {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from("catalogue_items")
     .select("*")
+    .is("deleted_at", null)
     .order("sort_order", { ascending: true })
     .order("title", { ascending: true });
 
@@ -28,6 +31,7 @@ export async function getAllCatalogueItems(): Promise<CatalogueItem[]> {
 export async function getCatalogueItemById(
   id: string,
 ): Promise<CatalogueItem | null> {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
@@ -52,11 +56,20 @@ export interface CreateItemInput {
   status: CatalogueStatus;
   cta_label?: string;
   hero_image_url?: string;
+  card_image_url?: string;
+  cost_price?: number;
+  markup_percent?: number;
+  selling_price?: number;
+  selling_price_overridden?: boolean;
+  requires_shipping?: boolean;
+  shipping_fee?: number;
+  shipping_overridden?: boolean;
   sort_order?: number;
   category_ids?: string[];
 }
 
 export async function createCatalogueItem(input: CreateItemInput) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { category_ids, ...itemData } = input;
@@ -96,6 +109,7 @@ export async function updateCatalogueItem(
   id: string,
   input: Partial<CreateItemInput>,
 ) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { category_ids, ...itemData } = input;
@@ -133,11 +147,12 @@ export async function updateCatalogueItem(
 }
 
 export async function deleteCatalogueItem(id: string) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { error } = await supabase
     .from("catalogue_items")
-    .delete()
+    .update({ deleted_at: new Date().toISOString() })
     .eq("id", id);
 
   if (error) throw new Error(`Failed to delete item: ${error.message}`);
@@ -153,6 +168,7 @@ export async function createCategory(input: {
   name: string;
   description?: string;
 }) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { error } = await supabase.from("categories").insert(input);
@@ -164,6 +180,7 @@ export async function createCategory(input: {
 }
 
 export async function updateCategory(id: string, input: Partial<{ slug: string; name: string; description: string }>) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { error } = await supabase.from("categories").update(input).eq("id", id);
@@ -175,6 +192,7 @@ export async function updateCategory(id: string, input: Partial<{ slug: string; 
 }
 
 export async function deleteCategory(id: string) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { error } = await supabase.from("categories").delete().eq("id", id);
@@ -190,6 +208,7 @@ export async function deleteCategory(id: string) {
 export async function getAllEnquiries(): Promise<
   (Enquiry & { profile_name?: string; item_title?: string })[]
 > {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
@@ -213,6 +232,7 @@ export async function updateEnquiryStatus(
   status: EnquiryStatus,
   admin_notes?: string,
 ) {
+  await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { error } = await supabase

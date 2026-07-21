@@ -15,7 +15,7 @@ export function CatalogueGrid({
   if (items.length === 0) {
     return (
       <div className="py-16 text-center">
-        <p className="text-lg font-semibold text-white/58">{emptyMessage}</p>
+        <p className="text-lg font-semibold text-white/50">{emptyMessage}</p>
       </div>
     );
   }

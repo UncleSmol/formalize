@@ -9,20 +9,17 @@ export async function FeaturedProducts() {
   if (featured.length === 0) return null;
 
   return (
-    <section className="bg-[#08080c] px-6 py-24">
+    <section className="px-6 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-              IT Products
-            </p>
-            <h2 className="mt-5 max-w-3xl text-4xl font-black leading-none text-balance sm:text-5xl">
+            <h2 className="section-heading max-w-3xl text-3xl font-black leading-none sm:text-4xl">
               Tools to power your business
             </h2>
           </div>
           <Link
             href="/services/it-products"
-            className="sharp-button inline-flex w-fit border border-white/12 bg-white/7 px-6 py-3 text-sm font-black uppercase tracking-wide text-white transition-colors hover:bg-white/12"
+            className="inline-flex w-fit border border-white/20 px-6 py-3 text-sm font-black uppercase tracking-wide text-white/80 transition-colors hover:border-white/40 hover:text-white"
           >
             View all products
           </Link>

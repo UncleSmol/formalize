@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ServicesDropdown } from "./ServicesDropdown";
 import { MobileMenu } from "./MobileMenu";
+import { AuthNavItem } from "./auth/AuthNavItem";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -11,30 +12,32 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+const AUTH_LINKS = [
+  { label: "Sign In", href: "/login" },
+  { label: "Create Account", href: "/signup" },
+];
+
 export function Navbar() {
   return (
-    <header className="fixed inset-x-0 top-0 z-[1000]">
-      <nav className="mx-auto mt-4 flex h-16 max-w-7xl items-center justify-between border border-white/10 bg-[#08080c]/78 px-4 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-2xl sm:px-6">
-        <Link
-          href="/"
-          className="flex items-center gap-2 border border-white/10 bg-white px-3 py-2 shadow-sm ring-1 ring-white/20"
-        >
+    <header className="fixed inset-x-0 top-0 z-[1000] border-b border-black/5 bg-foreground">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <Link href="/" className="flex items-center">
           <Image
             src="/Formalize-Logo.png"
             alt="Formalize"
-            width={120}
-            height={32}
+            width={110}
+            height={30}
             priority
             style={{ height: "auto" }}
           />
         </Link>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-2 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="px-3 py-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/62 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="px-2 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-background/60 transition-colors hover:text-background"
               >
                 {link.label}
               </Link>
@@ -43,17 +46,10 @@ export function Navbar() {
           <li>
             <ServicesDropdown />
           </li>
+          <AuthNavItem />
         </ul>
 
-        <div className="flex items-center gap-4">
-          <Link
-            href="/contact"
-            className="hidden bg-primary px-5 py-2 text-sm font-black uppercase tracking-[0.14em] text-[#08080c] shadow-[0_10px_34px_rgba(var(--primary-rgb),0.22)] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary lg:inline-flex"
-          >
-            Start Here
-          </Link>
-          <MobileMenu navLinks={NAV_LINKS} />
-        </div>
+        <MobileMenu navLinks={NAV_LINKS} authLinks={AUTH_LINKS} />
       </nav>
     </header>
   );

@@ -34,8 +34,16 @@ export interface CatalogueItem {
   item_type: CatalogueItemType;
   status: CatalogueStatus;
   hero_image_url: string | null;
+  card_image_url: string | null;
   cta_label: string;
   metadata: Record<string, unknown>;
+  cost_price: number | null;
+  markup_percent: number;
+  selling_price: number | null;
+  selling_price_overridden: boolean;
+  requires_shipping: boolean;
+  shipping_fee: number;
+  shipping_overridden: boolean;
   sort_order: number;
   created_by: string | null;
   updated_by: string | null;
@@ -75,4 +83,13 @@ export interface Enquiry {
 export interface CatalogueItemWithRelations extends CatalogueItem {
   categories: Category[];
   sections: CatalogueItemSection[];
+}
+
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  subject: string | null;
+  message: string;
+  created_at: string;
 }

@@ -25,6 +25,7 @@ export function CatalogueFilterBar({
     } else {
       params.delete(paramName);
     }
+    params.delete("page");
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
@@ -32,10 +33,10 @@ export function CatalogueFilterBar({
     <div className="flex flex-wrap gap-3">
       <button
         onClick={() => handleFilter(null)}
-        className={`sharp-button px-5 py-3 text-sm font-black transition-colors ${
+        className={`px-5 py-3 text-sm font-black transition-colors ${
           active === null
-            ? "bg-[#08080c] text-white"
-            : "bg-white text-[#08080c]/58 hover:bg-primary hover:text-[#08080c]"
+            ? "bg-white text-[#08080c]"
+            : "border border-white/20 text-white/50 hover:border-white/40 hover:text-white"
         }`}
         type="button"
       >
@@ -45,10 +46,10 @@ export function CatalogueFilterBar({
         <button
           key={cat.id}
           onClick={() => handleFilter(cat.slug)}
-          className={`sharp-button px-5 py-3 text-sm font-black transition-colors ${
+          className={`px-5 py-3 text-sm font-black transition-colors ${
             active === cat.slug
-              ? "bg-[#08080c] text-white"
-              : "bg-white text-[#08080c]/58 hover:bg-primary hover:text-[#08080c]"
+              ? "bg-white text-[#08080c]"
+              : "border border-white/20 text-white/50 hover:border-white/40 hover:text-white"
           }`}
           type="button"
         >

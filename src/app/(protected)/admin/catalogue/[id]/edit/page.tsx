@@ -43,6 +43,14 @@ export default async function EditCatalogueItemPage({ params }: EditPageProps) {
     const long_description = formData.get("long_description") as string;
     const cta_label = formData.get("cta_label") as string;
     const hero_image_url = formData.get("hero_image_url") as string;
+    const card_image_url = formData.get("card_image_url") as string;
+    const cost_price = formData.get("cost_price") as string;
+    const markup_percent = formData.get("markup_percent") as string;
+    const selling_price = formData.get("selling_price") as string;
+    const selling_price_overridden = formData.get("selling_price_overridden") === "true";
+    const requires_shipping = formData.get("requires_shipping") === "true";
+    const shipping_fee = formData.get("shipping_fee") as string;
+    const shipping_overridden = formData.get("shipping_overridden") === "true";
     const sort_order = parseInt(formData.get("sort_order") as string, 10) || 0;
     const category_ids = formData.getAll("category_ids") as string[];
 
@@ -63,6 +71,14 @@ export default async function EditCatalogueItemPage({ params }: EditPageProps) {
         status: status as "draft" | "published" | "archived",
         cta_label: cta_label || "Enquire",
         hero_image_url: hero_image_url || undefined,
+        card_image_url: card_image_url || undefined,
+        cost_price: cost_price ? parseFloat(cost_price) : undefined,
+        markup_percent: markup_percent ? parseFloat(markup_percent) : undefined,
+        selling_price: selling_price ? parseFloat(selling_price) : undefined,
+        selling_price_overridden,
+        requires_shipping,
+        shipping_fee: shipping_fee ? parseFloat(shipping_fee) : 0,
+        shipping_overridden,
         sort_order,
         category_ids,
       });

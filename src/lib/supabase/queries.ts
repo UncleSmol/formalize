@@ -24,31 +24,42 @@ export async function getPublishedCatalogueItems(filters?: {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  // Resolve category slug to ID if provided
-  let categoryId: string | undefined;
+  // Resolve category slug to item IDs via the junction table
+  let filteredItemIds: string[] | undefined;
   if (filters?.categorySlug) {
     const { data: cat } = await supabase
       .from("categories")
       .select("id")
       .eq("slug", filters.categorySlug)
       .single();
-    categoryId = cat?.id;
+
+    if (cat) {
+      const { data: jc } = await supabase
+        .from("catalogue_item_categories")
+        .select("catalogue_item_id")
+        .eq("category_id", cat.id);
+
+      filteredItemIds = (jc ?? []).map((r) => r.catalogue_item_id);
+      // No items in this category — return empty immediately
+      if (filteredItemIds.length === 0) {
+        return { items: [], total: 0, page, pageSize, totalPages: 0 };
+      }
+    }
   }
 
   // Count query
   let countQuery = supabase
     .from("catalogue_items")
     .select("*", { count: "exact", head: true })
-    .eq("status", "published");
+    .eq("status", "published")
+    .is("deleted_at", null);
 
   if (filters?.type) {
     countQuery = countQuery.eq("item_type", filters.type);
   }
 
-  if (categoryId) {
-    countQuery = countQuery.contains("catalogue_item_categories", [
-      { category_id: categoryId },
-    ]);
+  if (filteredItemIds) {
+    countQuery = countQuery.in("id", filteredItemIds);
   }
 
   const { count: total, error: countError } = await countQuery;
@@ -70,6 +81,7 @@ export async function getPublishedCatalogueItems(filters?: {
       `,
     )
     .eq("status", "published")
+    .is("deleted_at", null)
     .order("sort_order", { ascending: true })
     .order("title", { ascending: true })
     .range(from, to);
@@ -78,10 +90,8 @@ export async function getPublishedCatalogueItems(filters?: {
     dataQuery = dataQuery.eq("item_type", filters.type);
   }
 
-  if (categoryId) {
-    dataQuery = dataQuery.contains("catalogue_item_categories", [
-      { category_id: categoryId },
-    ]);
+  if (filteredItemIds) {
+    dataQuery = dataQuery.in("id", filteredItemIds);
   }
 
   const { data, error } = await dataQuery;
@@ -117,6 +127,7 @@ export async function getCatalogueItemBySlug(
     )
     .eq("slug", slug)
     .eq("status", "published")
+    .is("deleted_at", null)
     .single();
 
   if (error) {
@@ -163,6 +174,7 @@ export async function getRelatedItems(
       `,
     )
     .eq("status", "published")
+    .is("deleted_at", null)
     .neq("id", itemId)
     .in("catalogue_item_categories.category_id", categoryIds)
     .order("sort_order", { ascending: true })
@@ -182,6 +194,7 @@ export async function getAllPublishedSlugs(): Promise<string[]> {
     .from("catalogue_items")
     .select("slug")
     .eq("status", "published")
+    .is("deleted_at", null)
     .order("sort_order", { ascending: true });
 
   if (error) {

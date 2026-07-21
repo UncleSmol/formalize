@@ -1,10 +1,8 @@
 import { redirect } from "next/navigation";
+import { createCategory, updateCategory, deleteCategory } from "@/lib/supabase/admin-queries";
 import { getCategories } from "@/lib/supabase/queries";
-import {
-  createCategory,
-  deleteCategory,
-} from "@/lib/supabase/admin-queries";
 import { slugify } from "@/lib/utils";
+import { DeleteCategoryButton } from "./DeleteCategoryButton";
 
 export const metadata = { title: "Manage Categories | Admin" };
 
@@ -14,40 +12,33 @@ export default async function AdminCategoriesPage() {
   async function handleCreate(formData: FormData) {
     "use server";
 
-    const name = (formData.get("name") as string)?.trim();
-    const description = (formData.get("description") as string)?.trim();
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
 
-    if (!name) return;
-
-    try {
-      await createCategory({
-        slug: slugify(name),
-        name,
-        description: description || undefined,
-      });
-    } catch (err) {
-      throw new Error(
-        err instanceof Error ? err.message : "Failed to create category.",
-      );
-    }
-
+    await createCategory({ slug: slugify(name), name: name.trim(), description: description.trim() || undefined });
     redirect("/admin/categories");
   }
 
-  async function handleDelete(formData: FormData) {
+  async function handleUpdate(formData: FormData) {
     "use server";
 
     const id = formData.get("id") as string;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
     if (!id) return;
 
-    try {
-      await deleteCategory(id);
-    } catch (err) {
-      throw new Error(
-        err instanceof Error ? err.message : "Failed to delete category.",
-      );
-    }
+    await updateCategory(id, {
+      slug: slugify(name),
+      name: name.trim(),
+      description: description.trim() || undefined,
+    });
+    redirect("/admin/categories");
+  }
 
+  async function handleDelete(id: string) {
+    "use server";
+
+    await deleteCategory(id);
     redirect("/admin/categories");
   }
 
@@ -55,81 +46,68 @@ export default async function AdminCategoriesPage() {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-black">Categories</h1>
-        <p className="mt-1 text-sm text-white/60">
-          Organise catalogue items into categories.
+        <p className="mt-1 text-sm text-gray-500">
+          {categories.length} categor{categories.length === 1 ? "y" : "ies"} total
         </p>
       </div>
 
-      <div className="mb-10 border border-white/10 bg-white/6 p-6">
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-white/70">
-          New Category
-        </h2>
-        <form action={handleCreate} className="flex flex-col gap-4 sm:flex-row sm:items-end">
+      <div className="mb-10 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+        <h2 className="mb-4 text-sm font-black uppercase tracking-wide text-gray-700">New Category</h2>
+        <form action={handleCreate} className="flex flex-wrap items-end gap-3">
           <div className="flex-1">
-            <label htmlFor="name" className="mb-1 block text-xs font-bold text-white/60">
-              Name
-            </label>
             <input
-              id="name"
               name="name"
+              placeholder="Category name"
               required
-              className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
-              placeholder="e.g. Finance"
+              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none"
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="description" className="mb-1 block text-xs font-bold text-white/60">
-              Description
-            </label>
             <input
-              id="description"
               name="description"
-              className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
-              placeholder="e.g. Financial systems and tools"
+              placeholder="Description (optional)"
+              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="sharp-button shrink-0 bg-primary px-5 py-3 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-0.5"
+            className="bg-primary px-6 py-3 text-sm font-black uppercase tracking-wide text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
           >
             Add
           </button>
         </form>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((cat) => (
-          <div
-            key={cat.id}
-            className="flex items-center justify-between border border-white/10 bg-white/6 px-5 py-4"
-          >
-            <div>
-              <p className="font-bold text-white">{cat.name}</p>
-              {cat.description && (
-                <p className="mt-0.5 text-xs text-white/50">{cat.description}</p>
-              )}
-              <p className="mt-0.5 font-mono text-[10px] text-white/30">
-                /{cat.slug}
-              </p>
-            </div>
-            <form action={handleDelete}>
-              <input type="hidden" name="id" value={cat.id} />
-              <button
-                type="submit"
-                className="sharp-button border border-red-400/30 bg-red-400/10 px-3 py-1.5 text-xs font-bold uppercase text-red-400 transition-colors hover:bg-red-400/20"
-              >
-                Delete
-              </button>
-            </form>
-          </div>
-        ))}
-      </div>
+      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="px-4 py-3 text-left font-bold text-gray-500">Name</th>
+              <th className="px-4 py-3 text-left font-bold text-gray-500">Slug</th>
+              <th className="px-4 py-3 text-left font-bold text-gray-500">Description</th>
+              <th className="px-4 py-3 text-right font-bold text-gray-500">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map((cat) => (
+              <tr key={cat.id} className="border-b border-gray-100 transition-colors hover:bg-gray-50">
+                <td className="px-4 py-3 font-semibold text-gray-900">{cat.name}</td>
+                <td className="px-4 py-3 font-mono text-xs text-gray-400">{cat.slug}</td>
+                <td className="px-4 py-3 text-gray-500">{cat.description ?? "—"}</td>
+                <td className="px-4 py-3 text-right">
+                  <DeleteCategoryButton deleteAction={handleDelete.bind(null, cat.id)} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      {categories.length === 0 && (
-        <div className="py-16 text-center text-white/50">
-          No categories yet. Create one above.
-        </div>
-      )}
+        {categories.length === 0 && (
+          <div className="py-16 text-center text-gray-500">
+            No categories yet. Create one above.
+          </div>
+        )}
+      </div>
     </div>
   );
 }

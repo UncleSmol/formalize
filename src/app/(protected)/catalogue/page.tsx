@@ -34,27 +34,24 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
 
   return (
     <main className="text-white">
-      <section className="video-section premium-grid px-6 pb-24 pt-36">
+      <section className="px-6 pb-24 pt-28">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-          <div className="video-copy video-panel sharp-panel px-6 py-8 sm:px-8 sm:py-10">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-              Catalogue
-            </p>
-            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl">
+          <div>
+            <h1 className="section-heading text-4xl font-black sm:text-5xl lg:text-6xl">
               Everything a business needs to operate better.
             </h1>
           </div>
-          <p className="video-copy max-w-2xl text-lg leading-8 text-white/62">
+          <p className="max-w-2xl text-lg leading-8 text-white/60">
             Browse services, products, and resources we supply, configure, and
             support as part of a complete business operating stack.
           </p>
         </div>
       </section>
 
-      <section className="bg-[#f3f0e8] px-6 py-28 text-[#08080c]">
+      <section className="px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-[#5d4dff]">
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-white/40">
               Filter catalogue
             </p>
             <div className="mt-6">
@@ -66,7 +63,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
 
           <CatalogueGrid
             items={result.items}
-            variant="light"
+            variant="dark"
             emptyMessage="No items match the selected filter."
           />
 
@@ -81,12 +78,12 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
 
       <section className="bg-primary px-6 py-24 text-[#08080c]">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 lg:flex-row lg:items-center">
-          <h2 className="max-w-4xl text-5xl font-black leading-none text-balance">
+          <h2 className="section-heading max-w-4xl text-4xl font-black leading-none">
             Need help choosing the right solution?
           </h2>
           <a
             href="mailto:hello@formalize.co.za"
-            className="sharp-button inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
+            className="inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-opacity hover:opacity-90"
           >
             Get in touch
           </a>

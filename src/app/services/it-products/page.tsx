@@ -27,18 +27,15 @@ export default async function ITProducts({ searchParams }: ITProductsPageProps) 
   ]);
 
   return (
-    <main className="bg-[#08080c] text-white">
-      <section className="premium-grid px-6 pb-24 pt-36">
+    <main className="text-white">
+      <section className="px-6 pb-24 pt-28">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-              IT Catalogue
-            </p>
-            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl">
+            <h1 className="section-heading text-4xl font-black sm:text-5xl lg:text-6xl">
               Technology products with an implementation brain.
             </h1>
           </div>
-          <p className="max-w-2xl text-lg leading-8 text-white/62">
+          <p className="max-w-2xl text-lg leading-8 text-white/60">
             Browse the systems, devices, and infrastructure we can supply,
             configure, and support as part of a complete business operating
             stack.
@@ -46,10 +43,10 @@ export default async function ITProducts({ searchParams }: ITProductsPageProps) 
         </div>
       </section>
 
-      <section className="bg-[#f3f0e8] px-6 py-28 text-[#08080c]">
+      <section className="px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-[#5d4dff]">
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-white/40">
               Filter catalogue
             </p>
             <div className="mt-6">
@@ -61,7 +58,7 @@ export default async function ITProducts({ searchParams }: ITProductsPageProps) 
 
           <CatalogueGrid
             items={result.items}
-            variant="light"
+            variant="dark"
             emptyMessage="No products found in this category."
           />
 
@@ -76,12 +73,12 @@ export default async function ITProducts({ searchParams }: ITProductsPageProps) 
 
       <section className="bg-primary px-6 py-24 text-[#08080c]">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 lg:flex-row lg:items-center">
-          <h2 className="max-w-4xl text-5xl font-black leading-none text-balance">
+          <h2 className="section-heading max-w-4xl text-4xl font-black leading-none">
             Need the full stack scoped, supplied, and installed?
           </h2>
           <Link
             href="/contact"
-            className="sharp-button inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
+            className="inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-opacity hover:opacity-90"
           >
             Get in touch
           </Link>

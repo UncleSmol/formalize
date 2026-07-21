@@ -22,27 +22,11 @@ const FOOTER_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#08080c] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mb-14 overflow-hidden border-y border-white/10 py-6">
-          <div className="animate-marquee flex w-max gap-10 text-4xl font-black uppercase text-white/12 sm:text-6xl">
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div key={index} className="flex gap-10">
-                <span>Structure</span>
-                <span>Systems</span>
-                <span>Momentum</span>
-                <span>Formalize</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
+    <footer className="border-t border-black/5 bg-foreground text-background">
+      <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <Link
-              href="/"
-              className="inline-block bg-white px-4 py-3"
-            >
+            <Link href="/" className="inline-block">
               <Image
                 src="/Formalize-Logo.png"
                 alt="Formalize"
@@ -51,7 +35,7 @@ export function Footer() {
                 style={{ height: "auto" }}
               />
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/50">
               Premium business infrastructure across finance, operations,
               systems, marketing, HR, and workspace setup.
             </p>
@@ -59,15 +43,15 @@ export function Footer() {
 
           {FOOTER_LINKS.map((group) => (
             <div key={group.heading}>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-background/40">
                 {group.heading}
               </h3>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 space-y-2">
                 {group.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/62 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      className="text-sm text-background/50 transition-colors hover:text-background"
                     >
                       {link.label}
                     </Link>
@@ -78,7 +62,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/40">
+        <div className="mt-12 border-t border-black/5 pt-6 text-center text-sm text-background/30">
           &copy; {new Date().getFullYear()} Formalize. All rights reserved.
         </div>
       </div>

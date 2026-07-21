@@ -19,29 +19,26 @@ const audience = [
 export default function Audience() {
   return (
     <main className="text-white">
-      <section className="video-section premium-grid px-6 pb-24 pt-36">
-        <div className="video-copy video-panel sharp-panel mx-auto max-w-4xl px-6 py-8 sm:px-8 sm:py-10">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-            Who We Help
-          </p>
-          <h1 className="section-heading mt-5 max-w-5xl text-5xl font-black sm:text-6xl lg:text-7xl">
+      <section className="px-6 pb-24 pt-28">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="section-heading max-w-5xl text-4xl font-black sm:text-5xl lg:text-6xl">
             For businesses where growth has started to outrun structure.
           </h1>
         </div>
       </section>
 
-      <section className="bg-[#f3f0e8] px-6 py-28 text-[#08080c]">
-        <div className="mx-auto grid max-w-7xl gap-px overflow-hidden border border-[#08080c]/10 bg-[#08080c]/10 lg:grid-cols-3">
+      <section className="px-6 py-24">
+        <div className="mx-auto grid max-w-7xl gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-3">
           {audience.map((item, index) => (
-            <article key={item.title} className="bg-[#f8f5ed] p-8 sm:p-10">
-              <p className="text-sm font-black text-[#5d4dff]">0{index + 1}</p>
-              <h2 className="mt-10 text-4xl font-black leading-none">
+            <article key={item.title} className="bg-[#08080c] p-8 sm:p-10">
+              <p className="text-sm font-black text-white/30">0{index + 1}</p>
+              <h2 className="mt-10 text-4xl font-black leading-none text-white">
                 {item.title}
               </h2>
-              <p className="mt-5 text-sm leading-6 text-[#08080c]/58">
+              <p className="mt-5 text-sm leading-6 text-white/50">
                 {item.text}
               </p>
-              <p className="sharp-chip mt-10 border border-[#08080c]/12 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#08080c]/52">
+              <p className="mt-10 inline-block border border-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white/40">
                 {item.signal}
               </p>
             </article>

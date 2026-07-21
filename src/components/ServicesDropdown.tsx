@@ -24,35 +24,29 @@ export function ServicesDropdown() {
   return (
     <div ref={containerRef} className="relative">
       <button
-        className="px-3 py-2 text-sm font-semibold text-white/68 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="px-2 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-background/60 transition-colors hover:text-background"
         onClick={() => setIsOpen(!isOpen)}
       >
         Services
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full z-50 mt-3 w-[min(640px,calc(100vw-2rem))] overflow-hidden border border-white/10 bg-[#101018]/96 shadow-[0_28px_100px_rgba(0,0,0,0.42)] backdrop-blur-2xl">
-          <div className="grid gap-3 p-4 sm:grid-cols-2">
+        <div className="absolute right-0 top-full z-50 mt-2 w-[min(640px,calc(100vw-2rem))] border border-white/10 bg-[#101018] shadow-2xl">
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
             {SERVICES.map((service) => (
               <Link
                 key={service.id}
                 href={service.href}
                 onClick={() => setIsOpen(false)}
-                className="group p-4 transition-colors hover:bg-white/8"
+                className="bg-[#101018] p-4 transition-colors hover:bg-white/5"
               >
                 <div className="flex items-start gap-3">
-                  <div
-                    className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${service.color} text-lg text-[#17142a]`}
-                  >
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center bg-white/10 text-lg text-primary">
                     <i className={service.icon} aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#17142a] group-hover:text-[#ff4fa3]">
-                      <span className="text-white group-hover:text-primary">
-                        {service.title}
-                      </span>
-                    </h3>
-                    <p className="mt-1 text-xs leading-4 text-white/55">
+                    <h3 className="text-sm font-bold text-white">{service.title}</h3>
+                    <p className="mt-1 text-xs leading-4 text-white/50">
                       {service.description}
                     </p>
                   </div>

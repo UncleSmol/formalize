@@ -8,6 +8,7 @@ import {
 } from "@/lib/supabase/queries";
 import { CatalogueSections } from "@/components/catalogue/CatalogueSections";
 import { RelatedItems } from "@/components/catalogue/RelatedItems";
+import { calculateDisplayPrice, formatPrice, getShippingText } from "@/lib/pricing";
 
 interface CatalogueDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -53,25 +54,25 @@ export default async function CatalogueDetailPage({
 
   return (
     <main className="text-white">
-      <section className="video-section premium-grid px-6 pb-24 pt-36">
+      <section className="px-6 pb-24 pt-28">
         <div className="mx-auto max-w-7xl">
           <Link
             href="/catalogue"
-            className="sharp-button inline-flex items-center gap-2 border border-white/12 bg-white/6 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+            className="inline-flex items-center gap-2 border border-white/20 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-white/70 transition-colors hover:border-white/40 hover:text-white"
           >
             <i className="bi-arrow-left" aria-hidden="true" />
             All catalogue
           </Link>
 
           <div className="mt-8 flex flex-wrap gap-2">
-            <span className="sharp-chip border border-white/12 px-3 py-1 text-xs font-black uppercase tracking-wide text-white/50">
+            <span className="border border-white/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-white/40">
               {typeLabels[item.item_type] ?? item.item_type}
             </span>
             {item.categories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/catalogue?category=${cat.slug}`}
-                className="sharp-chip border border-white/12 px-3 py-1 text-xs font-black uppercase tracking-wide text-primary transition-colors hover:bg-white/10"
+                className="border border-white/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-primary transition-colors hover:bg-white/10"
               >
                 {cat.name}
               </Link>
@@ -83,21 +84,35 @@ export default async function CatalogueDetailPage({
               <h1 className="section-heading text-5xl font-black sm:text-6xl lg:text-7xl">
                 {item.title}
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/62">
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/60">
                 {item.long_description}
               </p>
+
+              {(() => {
+                const price = calculateDisplayPrice(item);
+                if (price == null) return null;
+                const shipping = getShippingText(item);
+                return (
+                  <div className="mt-8">
+                    <p className="text-4xl font-black text-primary">{formatPrice(price)}</p>
+                    {shipping && (
+                      <p className="mt-1 text-sm text-white/40">{shipping}</p>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
 
             {item.hero_image_url && (
-                    <div className="sharp-frame overflow-hidden border border-white/10 bg-white/6">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={item.hero_image_url}
-                        alt={item.title}
-                        className="h-auto w-full object-cover"
-                      />
-                    </div>
-                  )}
+              <div className="overflow-hidden border border-white/10 bg-white/[0.03]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.hero_image_url}
+                  alt={item.title}
+                  className="h-auto w-full object-cover"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -112,13 +127,13 @@ export default async function CatalogueDetailPage({
             <p className="text-sm font-black uppercase tracking-[0.24em]">
               Interested?
             </p>
-            <h2 className="mt-4 max-w-3xl text-4xl font-black leading-none text-balance sm:text-5xl">
+            <h2 className="section-heading mt-4 max-w-3xl text-4xl font-black leading-none sm:text-5xl">
               {item.cta_label} about {item.title.toLowerCase()}.
             </h2>
           </div>
           <Link
             href="/contact"
-            className="sharp-button inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-transform hover:-translate-y-1"
+            className="inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-opacity hover:opacity-90"
           >
             Start the conversation
           </Link>

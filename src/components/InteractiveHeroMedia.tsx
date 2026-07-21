@@ -84,10 +84,8 @@ export function InteractiveHeroMedia() {
 
               {/* Service Title */}
               <div>
-                <p className="text-xs uppercase tracking-widest font-bold text-[#ff4fa3] mb-3">
-                  Featured Service
-                </p>
-                <h2 className="text-6xl font-black text-[#17142a] leading-tight break-words max-w-full line-clamp-2">
+
+                <h2 className="text-5xl font-black text-[#17142a] leading-tight break-words max-w-full line-clamp-2">
                   {hoveredService || currentService}
                 </h2>
               </div>

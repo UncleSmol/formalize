@@ -1,40 +1,24 @@
-import Link from "next/link";
+import { ContactForm } from "@/components/ContactForm";
 
 const contactSteps = ["Tell us what feels messy", "We map the business", "We build the operating plan"];
 
 export default function Contact() {
   return (
     <main className="text-white">
-      <section id="contact" className="video-section premium-grid px-6 pb-24 pt-36">
-        <div className="mx-auto grid max-w-7xl gap-12 xl:grid-cols-[1fr_0.78fr] xl:items-end">
-          <div className="video-copy video-panel sharp-panel px-6 py-8 sm:px-8 sm:py-10">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-              Start here
-            </p>
-            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl xl:text-8xl">
+      <section className="px-6 pb-24 pt-28">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.78fr] lg:items-start">
+          <div>
+            <h1 className="section-heading text-4xl font-black sm:text-5xl lg:text-6xl xl:text-7xl">
               Build a business that feels controlled.
             </h1>
-          </div>
-          <div className="video-copy sharp-card border border-white/10 bg-[#08080c]/62 p-6 backdrop-blur-xl">
-            <p className="text-lg leading-8 text-white/68">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/60">
               If the work is scattered, the next move is structure. Send us a
               note and we will help identify the operating gaps worth fixing
               first.
             </p>
-            <div className="mt-8 flex flex-col gap-3">
-              <a
-                href="mailto:hello@formalize.co.za"
-                className="sharp-button inline-flex justify-center bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-transform hover:-translate-y-1"
-              >
-                Email Formalize
-              </a>
-              <Link
-                href="/services"
-                className="sharp-button inline-flex justify-center border border-white/12 px-7 py-4 text-sm font-bold uppercase tracking-wide text-white/70 transition-colors hover:bg-white hover:text-[#08080c]"
-              >
-                Review services
-              </Link>
-            </div>
+          </div>
+          <div className="border border-white/10 bg-white/[0.03] p-6">
+            <ContactForm />
           </div>
         </div>
       </section>

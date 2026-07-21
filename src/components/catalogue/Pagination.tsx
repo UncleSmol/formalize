@@ -37,7 +37,7 @@ export function Pagination({
 
   return (
     <div className="mt-12 flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
-      <p className="text-sm text-[#08080c]/50">
+      <p className="text-sm text-white/40">
         Showing {from}–{to} of {total} items
       </p>
 
@@ -45,7 +45,7 @@ export function Pagination({
         <button
           onClick={() => goToPage(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="sharp-button flex h-10 w-10 items-center justify-center border border-[#08080c]/12 bg-white text-sm font-black text-[#08080c]/50 transition-colors hover:bg-[#08080c] hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-10 w-10 items-center justify-center border border-white/20 text-sm font-black text-white/50 transition-colors hover:bg-white hover:text-[#08080c] disabled:cursor-not-allowed disabled:opacity-30"
           type="button"
           aria-label="Previous page"
         >
@@ -56,7 +56,7 @@ export function Pagination({
           page === null ? (
             <span
               key={`ellipsis-${i}`}
-              className="flex h-10 w-6 items-center justify-center text-sm text-[#08080c]/30"
+              className="flex h-10 w-6 items-center justify-center text-sm text-white/30"
             >
               ...
             </span>
@@ -64,10 +64,10 @@ export function Pagination({
             <button
               key={page}
               onClick={() => goToPage(page)}
-              className={`sharp-button flex h-10 w-10 items-center justify-center text-sm font-black transition-colors ${
+              className={`flex h-10 w-10 items-center justify-center text-sm font-black transition-colors ${
                 page === currentPage
-                  ? "bg-[#08080c] text-white"
-                  : "border border-[#08080c]/12 bg-white text-[#08080c]/50 hover:bg-[#08080c] hover:text-white"
+                  ? "bg-white text-[#08080c]"
+                  : "border border-white/20 text-white/50 hover:bg-white hover:text-[#08080c]"
               }`}
               type="button"
               aria-label={`Page ${page}`}
@@ -81,7 +81,7 @@ export function Pagination({
         <button
           onClick={() => goToPage(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="sharp-button flex h-10 w-10 items-center justify-center border border-[#08080c]/12 bg-white text-sm font-black text-[#08080c]/50 transition-colors hover:bg-[#08080c] hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-10 w-10 items-center justify-center border border-white/20 text-sm font-black text-white/50 transition-colors hover:bg-white hover:text-[#08080c] disabled:cursor-not-allowed disabled:opacity-30"
           type="button"
           aria-label="Next page"
         >

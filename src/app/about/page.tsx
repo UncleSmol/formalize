@@ -20,18 +20,14 @@ const principles = [
 export default function About() {
   return (
     <main className="text-white">
-      <section className="video-section premium-grid relative overflow-hidden px-6 pb-24 pt-36">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(var(--primary-rgb),0.15),transparent_30%),linear-gradient(180deg,transparent,#08080c_82%)]" />
-        <div className="relative mx-auto grid max-w-7xl gap-12 xl:grid-cols-[0.9fr_1.1fr] xl:items-end">
-          <div className="video-copy video-panel sharp-panel px-6 py-8 sm:px-8 sm:py-10">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-              About Formalize
-            </p>
-            <h1 className="section-heading mt-5 text-5xl font-black sm:text-6xl lg:text-7xl">
+      <section className="px-6 pb-24 pt-28">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div>
+            <h1 className="section-heading text-4xl font-black sm:text-5xl lg:text-6xl">
               We design the operating layer behind ambitious businesses.
             </h1>
           </div>
-          <p className="video-copy max-w-2xl text-lg leading-8 text-white/72">
+          <p className="max-w-2xl text-lg leading-8 text-white/60">
             Formalize is built for companies that are growing faster than their
             internal structure. We translate scattered work into systems that
             make the business easier to run, easier to sell, and easier to
@@ -40,9 +36,9 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-[#f3f0e8] px-6 py-28 text-[#08080c]">
-        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1fr_0.85fr]">
-          <div className="sharp-frame overflow-hidden bg-[#11111a]">
+      <section className="px-6 py-24">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-center">
+          <div className="overflow-hidden border border-white/10 bg-white/[0.03]">
             <Image
               src={processesHeroImage}
               alt="Operational systems preview"
@@ -50,19 +46,16 @@ export default function About() {
               priority
             />
           </div>
-          <div className="grid gap-6">
+          <div className="grid gap-8">
             {principles.map((principle, index) => (
-              <article
-                key={principle.title}
-                className="border-b border-[#08080c]/12 pb-6"
-              >
-                <p className="text-sm font-black text-[#5d4dff]">
+              <article key={principle.title} className="border-b border-white/10 pb-6">
+                <p className="text-sm font-black text-white/30">
                   0{index + 1}
                 </p>
-                <h2 className="mt-3 text-3xl font-black">
+                <h2 className="mt-3 text-3xl font-black text-white">
                   {principle.title}
                 </h2>
-                <p className="mt-3 text-sm leading-6 text-[#08080c]/58">
+                <p className="mt-3 text-sm leading-6 text-white/50">
                   {principle.text}
                 </p>
               </article>
@@ -71,17 +64,14 @@ export default function About() {
         </div>
       </section>
 
-      <section className="video-section px-6 py-28">
+      <section className="px-6 py-24">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-          <div className="video-copy max-w-2xl">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-primary">
-              Human systems
-            </p>
-            <h2 className="mt-5 text-5xl font-black leading-none text-balance">
+          <div className="max-w-2xl">
+            <h2 className="section-heading text-4xl font-black leading-none">
               Premium structure still needs to feel human.
             </h2>
           </div>
-          <div className="sharp-frame overflow-hidden border border-white/10 bg-white/6">
+          <div className="overflow-hidden border border-white/10 bg-white/[0.03]">
             <Image
               src={hrInfoImage}
               alt="Human resources information preview"
