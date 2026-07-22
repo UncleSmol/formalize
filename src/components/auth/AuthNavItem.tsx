@@ -58,14 +58,15 @@ export function AuthNavItem() {
           title="Profile"
         >
           {showImg ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={avatarUrl}
               alt=""
-              className="h-6 w-6 rounded-full border border-white/20 object-cover"
+              className="h-8 w-8 rounded-full border border-white/20 object-cover"
               onError={() => setImgError(true)}
             />
           ) : (
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-black text-primary">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-xs font-black text-primary">
               {initial}
             </span>
           )}
@@ -75,7 +76,7 @@ export function AuthNavItem() {
           className="flex items-center px-2 py-2 text-xs text-background/40 transition-colors hover:text-red-400"
           title="Sign out"
         >
-          <i className="bi-box-arrow-right text-sm" aria-hidden="true" />
+          <i className="bi-box-arrow-right text-base" aria-hidden="true" />
         </button>
       </li>
     );
@@ -85,9 +86,9 @@ export function AuthNavItem() {
     <li>
       <Link
         href="/login"
-        className="flex items-center gap-2 px-2 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-background/60 transition-colors hover:text-background"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-semibold uppercase tracking-[0.12em] text-background/60 transition-colors hover:text-background"
       >
-        <i className="bi-person text-sm" aria-hidden="true" />
+        <i className="bi-person text-base" aria-hidden="true" />
         <span>Sign In</span>
       </Link>
     </li>

@@ -1,8 +1,17 @@
 import { ContactForm } from "@/components/ContactForm";
 
+interface ContactPageProps {
+  searchParams?: Promise<{ item?: string; title?: string }>;
+}
+
 const contactSteps = ["Tell us what feels messy", "We map the business", "We build the operating plan"];
 
-export default function Contact() {
+export default async function Contact({ searchParams }: ContactPageProps) {
+  const params = await searchParams;
+  const prefill = params?.item
+    ? { item: params.item, title: params.title ?? params.item }
+    : undefined;
+
   return (
     <main className="text-white">
       <section className="px-6 pb-24 pt-28">
@@ -18,7 +27,7 @@ export default function Contact() {
             </p>
           </div>
           <div className="border border-white/10 bg-white/[0.03] p-6">
-            <ContactForm />
+            <ContactForm prefill={prefill} />
           </div>
         </div>
       </section>

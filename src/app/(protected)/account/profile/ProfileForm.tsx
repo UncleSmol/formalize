@@ -27,6 +27,7 @@ export function ProfileForm({ profile, userEmail, avatarUrl, onSubmit }: Profile
       {/* Avatar Preview */}
       {avatarUrl && (
         <div className="flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={avatarUrl}
             alt="Profile"

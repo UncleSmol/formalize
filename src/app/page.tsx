@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { SERVICES } from "@/lib/services";
 import { FeaturedProducts } from "@/components/FeaturedProducts";
-import laptopHeroImage from "@/assets/laptop-hero-image.png";
+import { TeamImageRotator } from "@/components/TeamImageRotator";
 
 const proofPoints = [
   { value: "06", label: "connected business functions" },
@@ -20,8 +19,8 @@ const operatingRhythm = [
 export default function Home() {
   return (
     <main className="text-white">
-      <section className="relative flex min-h-[calc(100dvh-4rem)] items-center overflow-hidden px-6">
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-16 xl:grid-cols-[1fr_1.1fr]">
+      <section className="relative flex min-h-[calc(100dvh-4rem)] items-center overflow-visible px-6">
+        <div className="mx-auto w-full max-w-7xl">
           <div className="animate-reveal-up max-w-2xl">
             <h1 className="section-heading mt-6 text-4xl font-black leading-none sm:text-5xl lg:text-6xl xl:text-7xl">
               Structure that makes a company feel under control.
@@ -47,21 +46,14 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </div>
 
-          <div className="hidden xl:block">
-            <div className="grid gap-4">
-              <Image
-                src={laptopHeroImage}
-                alt="Formalize systems dashboard preview"
-                className="w-full object-cover"
-                priority
-              />
-            </div>
-          </div>
+        <div className="absolute bottom-0 right-0 hidden w-1/2 justify-center xl:flex">
+          <TeamImageRotator />
         </div>
       </section>
 
-      <section className="border-y border-gray-200 bg-white px-6 py-12">
+      <section className="relative border-y border-gray-200 bg-white px-6 py-12">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
           {proofPoints.map((point) => (
             <div key={point.label}>
@@ -73,6 +65,9 @@ export default function Home() {
               </p>
             </div>
           ))}
+        </div>
+        <div className="absolute bottom-[-5px] right-0 translate-x-[30px] xl:hidden">
+          <TeamImageRotator />
         </div>
       </section>
 

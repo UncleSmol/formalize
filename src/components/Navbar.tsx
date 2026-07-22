@@ -26,8 +26,8 @@ export function Navbar() {
           <Image
             src="/Formalize-Logo.png"
             alt="Formalize"
-            width={110}
-            height={30}
+            width={170}
+            height={46}
             priority
             style={{ height: "auto" }}
           />
@@ -38,7 +38,7 @@ export function Navbar() {
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="px-2 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-background/60 transition-colors hover:text-background"
+                className="px-3 py-2 text-sm font-semibold uppercase tracking-[0.12em] text-background/60 transition-colors hover:text-background"
               >
                 {link.label}
               </Link>

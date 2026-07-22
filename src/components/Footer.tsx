@@ -30,8 +30,8 @@ export function Footer() {
               <Image
                 src="/Formalize-Logo.png"
                 alt="Formalize"
-                width={120}
-                height={32}
+                width={170}
+                height={46}
                 style={{ height: "auto" }}
               />
             </Link>
@@ -62,8 +62,23 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-black/5 pt-6 text-center text-sm text-background/30">
-          &copy; {new Date().getFullYear()} Formalize. All rights reserved.
+        <div className="mt-12 border-t border-black/5 pt-6">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-background/30">
+              &copy; {new Date().getFullYear()} Formalize. All rights reserved.
+            </p>
+            <nav className="flex gap-4 text-sm text-background/30">
+              <Link href="/privacy" className="transition-colors hover:text-background/60">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="transition-colors hover:text-background/60">
+                Terms of Service
+              </Link>
+              <Link href="/cookies" className="transition-colors hover:text-background/60">
+                Cookie Policy
+              </Link>
+            </nav>
+          </div>
         </div>
       </div>
     </footer>

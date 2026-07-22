@@ -1,7 +1,15 @@
 import "server-only";
 
+import type { CatalogueItem } from "@/lib/supabase/types";
 import { createServiceRoleClient } from "@/lib/supabase/client";
 import { calculateDisplayPrice } from "@/lib/pricing";
+
+type CatalogueItemRow = Pick<CatalogueItem,
+  | "id" | "slug" | "title" | "card_image_url"
+  | "cost_price" | "markup_percent" | "selling_price"
+  | "selling_price_overridden" | "requires_shipping"
+  | "shipping_fee" | "shipping_overridden"
+>;
 
 export interface CartItem {
   catalogue_item_id: string;
@@ -32,11 +40,11 @@ export async function getCart(userId: string): Promise<CartItem[]> {
 
   if (itemsError || !catalogueItems) return [];
 
-  const anyItems = catalogueItems as any[];
-  const priceMap = new Map(anyItems.map((i) => [i.id, calculateDisplayPrice(i)]));
+  const items = catalogueItems as CatalogueItemRow[];
+  const priceMap = new Map(items.map((i) => [i.id, calculateDisplayPrice(i as CatalogueItem)]));
 
   return data.map((d) => {
-    const item = anyItems.find((i) => i.id === d.catalogue_item_id);
+    const item = items.find((i) => i.id === d.catalogue_item_id);
     return {
       catalogue_item_id: d.catalogue_item_id,
       title: item?.title ?? "Unknown",

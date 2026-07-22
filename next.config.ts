@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://*.supabase.in http://127.0.0.1:*; frame-ancestors 'none'",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; img-src 'self' https: data:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://*.supabase.in http://127.0.0.1:*; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'",
           },
           {
             key: "Permissions-Policy",

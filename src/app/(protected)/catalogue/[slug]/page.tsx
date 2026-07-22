@@ -6,6 +6,7 @@ import {
   getAllPublishedSlugs,
   getRelatedItems,
 } from "@/lib/supabase/queries";
+import { AddToCartButton } from "@/components/catalogue/AddToCartButton";
 import { CatalogueSections } from "@/components/catalogue/CatalogueSections";
 import { RelatedItems } from "@/components/catalogue/RelatedItems";
 import { calculateDisplayPrice, formatPrice, getShippingText } from "@/lib/pricing";
@@ -98,6 +99,11 @@ export default async function CatalogueDetailPage({
                     {shipping && (
                       <p className="mt-1 text-sm text-white/40">{shipping}</p>
                     )}
+                    {item.item_type === "product" && (
+                      <div className="mt-6">
+                        <AddToCartButton itemId={item.id} />
+                      </div>
+                    )}
                   </div>
                 );
               })()}
@@ -156,7 +162,7 @@ export default async function CatalogueDetailPage({
             </h2>
           </div>
           <Link
-            href="/contact"
+            href={`/contact?item=${item.slug}&title=${encodeURIComponent(item.title)}`}
             className="inline-flex w-fit bg-[#08080c] px-7 py-4 text-sm font-black uppercase tracking-wide text-white transition-opacity hover:opacity-90"
           >
             Start the conversation

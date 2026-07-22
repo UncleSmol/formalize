@@ -4,7 +4,16 @@ import { useState, useCallback } from "react";
 import { submitContactForm } from "@/app/contact/actions";
 import { TurnstileWidget } from "@/components/auth/TurnstileWidget";
 
-export function ContactForm() {
+interface ContactFormPrefill {
+  item: string;
+  title: string;
+}
+
+interface ContactFormProps {
+  prefill?: ContactFormPrefill;
+}
+
+export function ContactForm({ prefill }: ContactFormProps) {
   const [state, setState] = useState<{
     success?: boolean;
     error?: string;
@@ -105,6 +114,7 @@ export function ContactForm() {
         <input
           id="subject"
           name="subject"
+          defaultValue={prefill ? `Enquiry about ${prefill.title}` : ""}
           className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
           placeholder="How can we help?"
         />
@@ -122,6 +132,7 @@ export function ContactForm() {
           name="message"
           required
           rows={5}
+          defaultValue={prefill ? `Hi, I'm interested in ${prefill.title} and would like to learn more.\n\nhttps://formalize.co.za/catalogue/${prefill.item}` : ""}
           className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
           placeholder="Tell us about your business needs..."
         />

@@ -26,19 +26,25 @@ export function CartNavItem() {
 
     load();
 
-    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(() => {
       load();
     });
 
-    return () => listener?.subscription.unsubscribe();
+    function onCartUpdated() { load(); }
+    window.addEventListener("cart-updated", onCartUpdated);
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+      window.removeEventListener("cart-updated", onCartUpdated);
+    };
   }, []);
 
   return (
     <Link
       href="/cart"
-      className="relative flex items-center px-2 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-background/60 transition-colors hover:text-background"
+      className="relative flex items-center px-3 py-2 text-sm font-semibold uppercase tracking-[0.12em] text-background/60 transition-colors hover:text-background"
     >
-      <i className="bi-cart3 text-sm" aria-hidden="true" />
+      <i className="bi-cart3 text-base" aria-hidden="true" />
       {count > 0 && (
         <span className="absolute -right-1 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary px-1 text-[9px] font-black text-white">
           {count > 9 ? "9+" : count}

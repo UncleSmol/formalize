@@ -25,11 +25,12 @@ export function LoginForm() {
     setFieldErrors({});
     setPending(true);
 
-    if (!captchaToken) {
-      setError("Please complete the security check.");
-      setPending(false);
-      return;
-    }
+    // captcha disabled - uncomment to require:
+    // if (!captchaToken) {
+    //   setError("Please complete the security check.");
+    //   setPending(false);
+    //   return;
+    // }
 
     const form = new FormData(e.currentTarget);
     const raw = {
@@ -55,7 +56,7 @@ export function LoginForm() {
     const { error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
-      options: { captchaToken },
+      options: { captchaToken: captchaToken ?? undefined },
     });
 
     setPending(false);

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import Script from "next/script";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import StickyVideoBackground from "@/components/StickyVideoBackground";
@@ -41,6 +42,10 @@ export default function RootLayout({
           <div className="flex-1 pt-16">{children}</div>
           <Footer />
         </div>
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

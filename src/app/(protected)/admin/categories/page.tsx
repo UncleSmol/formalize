@@ -19,22 +19,6 @@ export default async function AdminCategoriesPage() {
     redirect("/admin/categories");
   }
 
-  async function handleUpdate(formData: FormData) {
-    "use server";
-
-    const id = formData.get("id") as string;
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    if (!id) return;
-
-    await updateCategory(id, {
-      slug: slugify(name),
-      name: name.trim(),
-      description: description.trim() || undefined,
-    });
-    redirect("/admin/categories");
-  }
-
   async function handleDelete(id: string) {
     "use server";
 

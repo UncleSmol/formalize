@@ -38,6 +38,7 @@ export function AddToCartButton({ itemId, label = "Add to Cart" }: AddToCartButt
 
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+    window.dispatchEvent(new CustomEvent("cart-updated"));
     router.refresh();
   }
 
