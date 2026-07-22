@@ -1,13 +1,18 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import type { CatalogueItem, Category } from "@/lib/supabase/types";
+
+interface ItemImage {
+  url: string;
+}
 
 interface CatalogueItemFormProps {
   item?: CatalogueItem | null;
   categories: Category[];
   selectedCategoryIds?: string[];
+  itemImages?: ItemImage[];
   onSubmit: (
     prevState: unknown,
     formData: FormData,
@@ -18,9 +23,11 @@ export function CatalogueItemForm({
   item,
   categories,
   selectedCategoryIds = [],
+  itemImages = [],
   onSubmit,
 }: CatalogueItemFormProps) {
   const [state, formAction, pending] = useActionState(onSubmit, undefined);
+  const [images, setImages] = useState<ItemImage[]>(itemImages ?? []);
 
   return (
     <form action={formAction} className="max-w-3xl">
@@ -278,6 +285,56 @@ export function CatalogueItemForm({
               placeholder="https://..."
             />
           </div>
+        </div>
+
+        {/* Gallery images */}
+        <div className="rounded border border-gray-200 bg-gray-50 p-5">
+          <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Image Gallery</p>
+          <p className="mb-4 text-xs text-gray-500">
+            Additional product images displayed in a gallery on the detail page.
+          </p>
+
+          <div className="space-y-3">
+            {images.map((img, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <input
+                  type="url"
+                  value={img.url}
+                  onChange={(e) => {
+                    const next = [...images];
+                    next[i] = { url: e.target.value };
+                    setImages(next);
+                  }}
+                  className="flex-1 rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="https://..."
+                />
+                {images.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setImages(images.filter((_, j) => j !== i))}
+                    className="rounded bg-red-100 px-3 py-3 text-sm font-bold text-red-600 transition-colors hover:bg-red-200"
+                    title="Remove image"
+                  >
+                    <i className="bi-x" aria-hidden="true" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setImages([...images, { url: "" }])}
+            className="mt-3 flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary/80"
+          >
+            <i className="bi-plus-circle" aria-hidden="true" />
+            Add Image
+          </button>
+
+          {/* Hidden inputs to carry image URLs in form submission */}
+          {images.map((img, i) => (
+            <input key={i} type="hidden" name="image_urls" value={img.url} />
+          ))}
         </div>
 
         {/* CTA + Sort Order */}

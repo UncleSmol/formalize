@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import StickyVideoBackground from "@/components/StickyVideoBackground";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { Tracker } from "@/components/Tracker";
 import "./globals.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
       className={`${poppins.variable} h-full antialiased`}
     >
       <body className="relative flex min-h-full flex-col overflow-x-hidden bg-[#08080c] text-white">
+        <Tracker />
         <ScrollToTop />
         <StickyVideoBackground />
         <div className="relative z-10 flex min-h-full flex-1 flex-col">

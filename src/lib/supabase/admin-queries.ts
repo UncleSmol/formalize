@@ -1,6 +1,6 @@
 import "server-only";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "@/lib/admin-guard";
 import { logAdminAction } from "@/lib/audit";
 import { createServiceRoleClient } from "./client";
@@ -26,6 +26,22 @@ export async function getAllCatalogueItems(): Promise<CatalogueItem[]> {
     .order("title", { ascending: true });
 
   if (error) throw new Error(`Failed to fetch items: ${error.message}`);
+  return data ?? [];
+}
+
+export async function getCatalogueItemImages(
+  itemId: string,
+): Promise<{ id: string; url: string; alt_text: string; sort_order: number }[]> {
+  await requireAdmin();
+  const supabase = createServiceRoleClient();
+
+  const { data, error } = await supabase
+    .from("catalogue_item_images")
+    .select("id, url, alt_text, sort_order")
+    .eq("catalogue_item_id", itemId)
+    .order("sort_order", { ascending: true });
+
+  if (error) throw new Error(`Failed to fetch item images: ${error.message}`);
   return data ?? [];
 }
 
@@ -58,6 +74,7 @@ export interface CreateItemInput {
   cta_label?: string;
   hero_image_url?: string;
   card_image_url?: string;
+  image_urls?: string[];
   cost_price?: number;
   markup_percent?: number;
   selling_price?: number;
@@ -102,7 +119,24 @@ export async function createCatalogueItem(input: CreateItemInput) {
       throw new Error(`Failed to link categories: ${jcError.message}`);
   }
 
+  const image_urls = input.image_urls;
+  if (image_urls && image_urls.length > 0) {
+    const { error: imgError } = await supabase
+      .from("catalogue_item_images")
+      .insert(
+        image_urls.map((url, i) => ({
+          catalogue_item_id: data.id,
+          url,
+          sort_order: i,
+        })),
+      );
+
+    if (imgError)
+      throw new Error(`Failed to insert item images: ${imgError.message}`);
+  }
+
   revalidatePath("/admin/catalogue");
+  revalidateTag("catalogue", "max");
 
   logAdminAction("create", "catalogue_item", data.id, { title: input.title });
 
@@ -116,7 +150,7 @@ export async function updateCatalogueItem(
   await requireAdmin();
   const supabase = createServiceRoleClient();
 
-  const { category_ids, ...itemData } = input;
+  const { category_ids, image_urls, ...itemData } = input;
 
   const { error } = await supabase
     .from("catalogue_items")
@@ -146,8 +180,31 @@ export async function updateCatalogueItem(
     }
   }
 
+  if (image_urls !== undefined) {
+    await supabase
+      .from("catalogue_item_images")
+      .delete()
+      .eq("catalogue_item_id", id);
+
+    if (image_urls.length > 0) {
+      const { error: imgError } = await supabase
+        .from("catalogue_item_images")
+        .insert(
+          image_urls.map((url, i) => ({
+            catalogue_item_id: id,
+            url,
+            sort_order: i,
+          })),
+        );
+
+      if (imgError)
+        throw new Error(`Failed to update item images: ${imgError.message}`);
+    }
+  }
+
   revalidatePath("/admin/catalogue");
   revalidatePath("/catalogue");
+  revalidateTag("catalogue", "max");
 
   logAdminAction("update", "catalogue_item", id, { updated: Object.keys(input) });
 }
@@ -165,6 +222,7 @@ export async function deleteCatalogueItem(id: string) {
 
   revalidatePath("/admin/catalogue");
   revalidatePath("/catalogue");
+  revalidateTag("catalogue", "max");
 
   logAdminAction("delete", "catalogue_item", id);
 }
@@ -185,6 +243,7 @@ export async function createCategory(input: {
 
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
+  revalidateTag("catalogue", "max");
 
   logAdminAction("create", "category", input.slug, { name: input.name });
 }
@@ -199,6 +258,7 @@ export async function updateCategory(id: string, input: Partial<{ slug: string; 
 
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
+  revalidateTag("catalogue", "max");
 
   logAdminAction("update", "category", id, { updated: Object.keys(input) });
 }
@@ -213,6 +273,7 @@ export async function deleteCategory(id: string) {
 
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
+  revalidateTag("catalogue", "max");
 
   logAdminAction("delete", "category", id);
 }

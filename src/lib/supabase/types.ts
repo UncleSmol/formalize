@@ -80,9 +80,19 @@ export interface Enquiry {
   updated_at: string;
 }
 
+export interface CatalogueItemImage {
+  id: string;
+  catalogue_item_id: string;
+  url: string;
+  alt_text: string;
+  sort_order: number;
+  created_at: string;
+}
+
 export interface CatalogueItemWithRelations extends CatalogueItem {
   categories: Category[];
   sections: CatalogueItemSection[];
+  images: CatalogueItemImage[];
 }
 
 export interface ContactSubmission {

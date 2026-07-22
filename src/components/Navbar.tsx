@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ServicesDropdown } from "./ServicesDropdown";
 import { MobileMenu } from "./MobileMenu";
 import { AuthNavItem } from "./auth/AuthNavItem";
+import { CartNavItem } from "./catalogue/CartNavItem";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -45,6 +46,9 @@ export function Navbar() {
           ))}
           <li>
             <ServicesDropdown />
+          </li>
+          <li>
+            <CartNavItem />
           </li>
           <AuthNavItem />
         </ul>

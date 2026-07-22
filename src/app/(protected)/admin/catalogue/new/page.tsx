@@ -30,6 +30,7 @@ export default async function NewCatalogueItemPage() {
     const shipping_overridden = formData.get("shipping_overridden") === "true";
     const sort_order = parseInt(formData.get("sort_order") as string, 10) || 0;
     const category_ids = formData.getAll("category_ids") as string[];
+    const image_urls = formData.getAll("image_urls").filter(Boolean) as string[];
 
     if (!title || !slug || !short_description || !long_description) {
       return { error: "Title, slug, short description, and long description are required." };
@@ -46,6 +47,7 @@ export default async function NewCatalogueItemPage() {
         cta_label: cta_label || "Enquire",
         hero_image_url: hero_image_url || undefined,
         card_image_url: card_image_url || undefined,
+        image_urls,
         cost_price: cost_price ? parseFloat(cost_price) : undefined,
         markup_percent: markup_percent ? parseFloat(markup_percent) : undefined,
         selling_price: selling_price ? parseFloat(selling_price) : undefined,

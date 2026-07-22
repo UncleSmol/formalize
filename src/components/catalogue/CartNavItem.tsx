@@ -1,0 +1,49 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { createBrowserClient } from "@/lib/supabase/browser";
+
+export function CartNavItem() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const supabase = createBrowserClient();
+
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("cart_items")
+        .select("quantity")
+        .eq("profile_id", user.id);
+
+      if (data) {
+        setCount(data.reduce((sum, i) => sum + i.quantity, 0));
+      }
+    }
+
+    load();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      load();
+    });
+
+    return () => listener?.subscription.unsubscribe();
+  }, []);
+
+  return (
+    <Link
+      href="/cart"
+      className="relative flex items-center px-2 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-background/60 transition-colors hover:text-background"
+    >
+      <i className="bi-cart3 text-sm" aria-hidden="true" />
+      {count > 0 && (
+        <span className="absolute -right-1 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary px-1 text-[9px] font-black text-white">
+          {count > 9 ? "9+" : count}
+        </span>
+      )}
+    </Link>
+  );
+}

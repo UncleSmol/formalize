@@ -1,23 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/browser";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 import { loginSchema } from "@/lib/validations/auth";
+import { TurnstileWidget } from "@/components/auth/TurnstileWidget";
 
 export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, setPending] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const handleCaptchaVerify = useCallback((token: string) => {
+    setCaptchaToken(token);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setFieldErrors({});
     setPending(true);
+
+    if (!captchaToken) {
+      setError("Please complete the security check.");
+      setPending(false);
+      return;
+    }
 
     const form = new FormData(e.currentTarget);
     const raw = {
@@ -43,12 +55,12 @@ export function LoginForm() {
     const { error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
+      options: { captchaToken },
     });
 
     setPending(false);
 
     if (authError) {
-      console.error("[login] Auth error:", authError.message);
       setError("Invalid email or password.");
       return;
     }
@@ -87,6 +99,10 @@ export function LoginForm() {
         {fieldErrors.password && (
           <p className="mt-1 text-xs text-red-400">{fieldErrors.password}</p>
         )}
+      </div>
+
+      <div className="flex justify-center">
+        <TurnstileWidget onVerify={handleCaptchaVerify} />
       </div>
 
       <button

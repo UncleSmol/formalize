@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import {
   getCatalogueItemById,
+  getCatalogueItemImages,
   updateCatalogueItem,
 } from "@/lib/supabase/admin-queries";
 import { getCategories } from "@/lib/supabase/queries";
@@ -23,14 +24,18 @@ export default async function EditCatalogueItemPage({ params }: EditPageProps) {
 
   if (!item) notFound();
 
-  // Fetch selected category IDs
   const supabase = createServiceRoleClient();
+
+  // Fetch selected category IDs
   const { data: itemCats } = await supabase
     .from("catalogue_item_categories")
     .select("category_id")
     .eq("catalogue_item_id", id);
 
   const selectedCategoryIds = (itemCats ?? []).map((jc) => jc.category_id);
+
+  // Fetch existing gallery images
+  const existingImages = await getCatalogueItemImages(id);
 
   async function handleUpdate(_prev: unknown, formData: FormData) {
     "use server";
@@ -53,6 +58,7 @@ export default async function EditCatalogueItemPage({ params }: EditPageProps) {
     const shipping_overridden = formData.get("shipping_overridden") === "true";
     const sort_order = parseInt(formData.get("sort_order") as string, 10) || 0;
     const category_ids = formData.getAll("category_ids") as string[];
+    const image_urls = formData.getAll("image_urls").filter(Boolean) as string[];
 
     if (!title || !slug || !short_description || !long_description) {
       return {
@@ -72,6 +78,7 @@ export default async function EditCatalogueItemPage({ params }: EditPageProps) {
         cta_label: cta_label || "Enquire",
         hero_image_url: hero_image_url || undefined,
         card_image_url: card_image_url || undefined,
+        image_urls,
         cost_price: cost_price ? parseFloat(cost_price) : undefined,
         markup_percent: markup_percent ? parseFloat(markup_percent) : undefined,
         selling_price: selling_price ? parseFloat(selling_price) : undefined,
@@ -103,6 +110,7 @@ export default async function EditCatalogueItemPage({ params }: EditPageProps) {
         item={item}
         categories={categories}
         selectedCategoryIds={selectedCategoryIds}
+        itemImages={existingImages}
         onSubmit={handleUpdate}
       />
     </div>

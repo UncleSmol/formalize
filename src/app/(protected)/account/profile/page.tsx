@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { createServiceRoleClient } from "@/lib/supabase/client";
+import { profileSchema } from "@/lib/validations/profile";
+import { stripHtml } from "@/lib/sanitize";
 import { ProfileForm } from "./ProfileForm";
 
 export const metadata = { title: "Profile | Formalize" };
@@ -69,19 +71,32 @@ export default async function ProfilePage() {
       return { error: "Not authenticated" };
     }
 
-    const full_name = formData.get("full_name") as string;
-    const company_name = formData.get("company_name") as string;
-    const phone = formData.get("phone") as string;
+    const raw = {
+      full_name: formData.get("full_name"),
+      company_name: formData.get("company_name"),
+      phone: formData.get("phone"),
+    };
+
+    const parsed = profileSchema.safeParse(raw);
+    if (!parsed.success) {
+      return { error: parsed.error.flatten().fieldErrors.full_name?.[0] ?? "Invalid input." };
+    }
+
+    const { full_name, company_name, phone } = parsed.data;
     const avatar_url = formData.get("avatar_url") as string;
+
+    const sanitized = {
+      full_name: stripHtml(full_name),
+      company_name: company_name ? stripHtml(company_name) : null,
+      phone: phone ? stripHtml(phone) : null,
+    };
 
     const adminClient = createServiceRoleClient();
 
     const { error: updateError } = await adminClient
       .from("profiles")
       .update({
-        full_name: full_name.trim() || null,
-        company_name: company_name.trim() || null,
-        phone: phone.trim() || null,
+        ...sanitized,
         updated_at: new Date().toISOString(),
       })
       .eq("id", currentUser.id);
@@ -90,15 +105,11 @@ export default async function ProfilePage() {
       return { error: updateError.message };
     }
 
-    const { error: metadataError } = await adminClient.auth.admin.updateUserById(
-      currentUser.id,
-      {
-        user_metadata: {
-          ...currentUser.user_metadata,
-          avatar_url: avatar_url.trim() || null,
-        },
+    const { error: metadataError } = await supabase.auth.updateUser({
+      data: {
+        avatar_url: avatar_url?.trim() || null,
       },
-    );
+    });
 
     if (metadataError) {
       return { error: metadataError.message };

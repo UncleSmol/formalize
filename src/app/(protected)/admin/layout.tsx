@@ -6,7 +6,9 @@ const ADMIN_NAV = [
   { label: "Dashboard", href: "/admin", icon: "bi-speedometer2" },
   { label: "Catalogue", href: "/admin/catalogue", icon: "bi-box-seam" },
   { label: "Categories", href: "/admin/categories", icon: "bi-tags" },
+  { label: "Orders", href: "/admin/orders", icon: "bi-cart3" },
   { label: "Enquiries", href: "/admin/enquiries", icon: "bi-envelope" },
+  { label: "Monitoring", href: "/admin/monitoring", icon: "bi-graph-up" },
   { label: "Users", href: "/admin/users", icon: "bi-people" },
 ];
 

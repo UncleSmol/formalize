@@ -10,6 +10,7 @@ export function AuthNavItem() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const supabase = createBrowserClient();
@@ -21,6 +22,7 @@ export function AuthNavItem() {
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      setImgError(false);
     });
 
     return () => listener?.subscription.unsubscribe();
@@ -43,6 +45,7 @@ export function AuthNavItem() {
 
   if (user) {
     const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
+    const showImg = avatarUrl && !imgError;
     const initial = (user.user_metadata?.full_name as string)?.charAt(0)?.toUpperCase()
       ?? user.email?.charAt(0).toUpperCase()
       ?? "?";
@@ -54,18 +57,12 @@ export function AuthNavItem() {
           className="flex items-center px-2 py-2"
           title="Profile"
         >
-          {avatarUrl ? (
+          {showImg ? (
             <img
               src={avatarUrl}
               alt=""
               className="h-6 w-6 rounded-full border border-white/20 object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-                (e.target as HTMLImageElement).insertAdjacentHTML(
-                  "afterend",
-                  `<span class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-black text-primary">${initial}</span>`,
-                );
-              }}
+              onError={() => setImgError(true)}
             />
           ) : (
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-black text-primary">

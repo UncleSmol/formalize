@@ -114,6 +114,30 @@ export default async function CatalogueDetailPage({
               </div>
             )}
           </div>
+
+          {item.images.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-xl font-black uppercase tracking-wide text-white/40">
+                Gallery
+              </h2>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {item.images.map((img) => (
+                  <div
+                    key={img.id}
+                    className="overflow-hidden border border-white/10 bg-white/[0.03]"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img.url}
+                      alt={img.alt_text || item.title}
+                      className="h-56 w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

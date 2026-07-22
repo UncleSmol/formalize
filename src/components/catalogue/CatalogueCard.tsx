@@ -15,7 +15,7 @@ interface CatalogueCardProps {
 
 export function CatalogueCard({ item, variant = "dark" }: CatalogueCardProps) {
   const isLight = variant === "light";
-  const imageUrl = item.card_image_url ?? item.hero_image_url;
+  const imageUrl = item.card_image_url ?? item.hero_image_url ?? item.images[0]?.url;
   const displayPrice = calculateDisplayPrice(item);
   const shippingText = getShippingText(item);
 

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { submitContactForm } from "@/app/contact/actions";
+import { TurnstileWidget } from "@/components/auth/TurnstileWidget";
 
 export function ContactForm() {
   const [state, setState] = useState<{
@@ -10,14 +11,26 @@ export function ContactForm() {
     errors?: Record<string, string[]>;
   } | null>(null);
   const [pending, setPending] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const handleCaptchaVerify = useCallback((token: string) => {
+    setCaptchaToken(token);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setPending(true);
     setState(null);
 
+    if (!captchaToken) {
+      setState({ error: "Please complete the security check." });
+      setPending(false);
+      return;
+    }
+
     const form = e.currentTarget;
     const formData = new FormData(form);
+    formData.append("captcha_token", captchaToken);
 
     const result = await submitContactForm(undefined, formData);
     setState(result);
@@ -115,6 +128,10 @@ export function ContactForm() {
         {fieldError("message") && (
           <p className="mt-1 text-xs text-red-400">{fieldError("message")}</p>
         )}
+      </div>
+
+      <div className="flex justify-center">
+        <TurnstileWidget onVerify={handleCaptchaVerify} />
       </div>
 
       <button

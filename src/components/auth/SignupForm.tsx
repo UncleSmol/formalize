@@ -1,22 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { createBrowserClient } from "@/lib/supabase/browser";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 import { signupSchema } from "@/lib/validations/auth";
+import { TurnstileWidget } from "@/components/auth/TurnstileWidget";
 
 export function SignupForm() {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, setPending] = useState(false);
   const [checkEmail, setCheckEmail] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const handleCaptchaVerify = useCallback((token: string) => {
+    setCaptchaToken(token);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setFieldErrors({});
     setPending(true);
+
+    if (!captchaToken) {
+      setError("Please complete the security check.");
+      setPending(false);
+      return;
+    }
 
     try {
       const form = new FormData(e.currentTarget);
@@ -47,26 +59,19 @@ export function SignupForm() {
         password,
         options: {
           data: { full_name },
+          captchaToken,
         },
       });
 
       if (signUpError) {
-        console.error("[signup] Supabase error:", {
-          message: signUpError.message,
-          status: (signUpError as { status?: number }).status,
-          code: (signUpError as { code?: string }).code,
-          name: signUpError.name,
-        });
-        setError(signUpError.message);
+        setError("Unable to create account. Please try again.");
         setPending(false);
         return;
       }
 
       setCheckEmail(true);
-    } catch (err) {
-      console.error("[signup] Uncaught error:", err instanceof Error ? err.message : err);
-      if (err instanceof Error && err.stack) console.error("[signup] Stack:", err.stack);
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } catch {
+      setError("Something went wrong. Please try again.");
       setPending(false);
     }
   }
@@ -128,6 +133,10 @@ export function SignupForm() {
       {fieldErrors.password && (
         <p className="-mt-3 text-xs text-red-400">{fieldErrors.password}</p>
       )}
+
+      <div className="flex justify-center">
+        <TurnstileWidget onVerify={handleCaptchaVerify} />
+      </div>
 
       <button
         type="submit"

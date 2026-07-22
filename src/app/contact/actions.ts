@@ -23,8 +23,33 @@ export async function submitContactForm(
     message: formData.get("message"),
   };
 
+  const captchaToken = formData.get("captcha_token") as string | null;
+
+  if (!captchaToken) {
+    return { error: "Please complete the security check." };
+  }
+
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (turnstileSecret) {
+    const verifyRes = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          secret: turnstileSecret,
+          response: captchaToken,
+        }),
+      },
+    );
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success) {
+      return { error: "Security check failed. Please try again." };
+    }
+  }
+
   const emailRaw = formData.get("email") as string;
-  const { allowed } = rateLimit(`contact:${emailRaw}`, {
+  const { allowed } = await rateLimit(`contact:${emailRaw}`, {
     maxRequests: 3,
     windowMs: 300_000,
   });
