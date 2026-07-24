@@ -15,17 +15,28 @@ export function AuthNavItem() {
   useEffect(() => {
     const supabase = createBrowserClient();
 
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null);
-      setLoading(false);
-    });
+    function refreshUser() {
+      supabase.auth.getUser().then(({ data }) => {
+        setUser(data?.user ?? null);
+        setLoading(false);
+        setImgError(false);
+      });
+    }
+
+    refreshUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      setLoading(false);
       setImgError(false);
     });
 
-    return () => listener?.subscription.unsubscribe();
+    window.addEventListener("user-metadata-updated", refreshUser);
+
+    return () => {
+      listener?.subscription.unsubscribe();
+      window.removeEventListener("user-metadata-updated", refreshUser);
+    };
   }, []);
 
   async function handleSignOut() {

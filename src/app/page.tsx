@@ -48,15 +48,15 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 right-0 hidden w-1/2 justify-center xl:flex">
+        <div className="absolute bottom-0 right-0 hidden w-1/2 justify-center min-[970px]:flex">
           <TeamImageRotator />
         </div>
       </section>
 
-      <section className="relative overflow-x-hidden border-y border-gray-200 bg-white px-6 py-12">
-        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
+      <section className="relative border-y border-gray-200 bg-white px-6 py-12">
+        <div className="relative z-10 mx-auto hidden max-w-7xl gap-8 min-[970px]:grid min-[970px]:grid-cols-3">
           {proofPoints.map((point) => (
-            <div key={point.label}>
+            <div key={point.label} className="rounded bg-white/80 p-4 backdrop-blur-sm">
               <p className="text-5xl font-black text-primary sm:text-6xl">
                 {point.value}
               </p>
@@ -66,7 +66,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="absolute bottom-[-5px] right-[-30%] xl:hidden">
+        <div className="absolute bottom-[-5px] right-0 min-[970px]:hidden">
           <TeamImageRotator variant="mobile" />
         </div>
       </section>

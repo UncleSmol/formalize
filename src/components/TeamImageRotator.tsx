@@ -70,12 +70,10 @@ export function TeamImageRotator({ variant }: { variant?: "default" | "mobile" }
         </div>
       ))}
 
-      {variant !== "mobile" && (
-        <div className="absolute bottom-4 left-4 z-30 rounded-full border border-white/10 bg-black/70 px-5 py-2 backdrop-blur-sm">
-          <p className="text-sm font-black leading-none text-white">{current.name}</p>
-          <p className="mt-0.5 text-[11px] font-semibold leading-none text-primary">{current.role}</p>
-        </div>
-      )}
+      <div className="absolute bottom-4 left-4 z-30 rounded-full border border-white/10 bg-black/70 px-5 py-2 backdrop-blur-sm">
+        <p className="text-sm font-black leading-none text-white">{current.name}</p>
+        <p className="mt-0.5 text-[11px] font-semibold leading-none text-primary">{current.role}</p>
+      </div>
     </div>
   );
 }

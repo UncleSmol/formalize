@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import formalizeLogo from "@/assets/Formalize-Logo.png";
 import { ServicesDropdown } from "./ServicesDropdown";
 import { MobileMenu } from "./MobileMenu";
 import { AuthNavItem } from "./auth/AuthNavItem";
@@ -24,12 +25,11 @@ export function Navbar() {
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link href="/" className="flex items-center">
           <Image
-            src="/Formalize-Logo.png"
+            src={formalizeLogo}
             alt="Formalize"
             width={170}
             height={46}
             priority
-            style={{ height: "auto" }}
           />
         </Link>
 
@@ -53,7 +53,10 @@ export function Navbar() {
           <AuthNavItem />
         </ul>
 
-        <MobileMenu navLinks={NAV_LINKS} authLinks={AUTH_LINKS} />
+        <div className="flex items-center gap-1 md:hidden">
+          <CartNavItem />
+          <MobileMenu navLinks={NAV_LINKS} authLinks={AUTH_LINKS} />
+        </div>
       </nav>
     </header>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import type { Profile } from "@/lib/supabase/types";
 
 interface ProfileFormProps {
@@ -10,11 +10,18 @@ interface ProfileFormProps {
   onSubmit: (
     prevState: unknown,
     formData: FormData,
-  ) => Promise<{ error?: string } | undefined>;
+  ) => Promise<{ error?: string; success?: boolean } | undefined>;
 }
 
 export function ProfileForm({ profile, userEmail, avatarUrl, onSubmit }: ProfileFormProps) {
   const [state, formAction, pending] = useActionState(onSubmit, undefined);
+  const [previewUrl, setPreviewUrl] = useState(avatarUrl ?? "");
+
+  useEffect(() => {
+    if (state && !state.error) {
+      window.dispatchEvent(new CustomEvent("user-metadata-updated"));
+    }
+  }, [state]);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -25,11 +32,11 @@ export function ProfileForm({ profile, userEmail, avatarUrl, onSubmit }: Profile
       )}
 
       {/* Avatar Preview */}
-      {avatarUrl && (
+      {previewUrl && (
         <div className="flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={avatarUrl}
+            src={previewUrl}
             alt="Profile"
             className="h-20 w-20 rounded-full border-2 border-primary/30 object-cover"
             onError={(e) => {
@@ -107,6 +114,7 @@ export function ProfileForm({ profile, userEmail, avatarUrl, onSubmit }: Profile
           name="avatar_url"
           type="url"
           defaultValue={avatarUrl ?? ""}
+          onChange={(e) => setPreviewUrl(e.target.value)}
           className="w-full rounded border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           placeholder="https://example.com/avatar.jpg"
         />

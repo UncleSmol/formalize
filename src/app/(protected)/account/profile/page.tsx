@@ -115,7 +115,7 @@ export default async function ProfilePage() {
       return { error: metadataError.message };
     }
 
-    redirect("/account/profile");
+    return { success: true };
   }
 
   return (

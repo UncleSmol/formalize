@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import formalizeLogo from "@/assets/Formalize-Logo.png";
 import { SERVICES } from "@/lib/services";
 
 const FOOTER_LINKS = [
@@ -28,11 +29,10 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block">
               <Image
-                src="/Formalize-Logo.png"
+                src={formalizeLogo}
                 alt="Formalize"
                 width={170}
                 height={46}
-                style={{ height: "auto" }}
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/50">

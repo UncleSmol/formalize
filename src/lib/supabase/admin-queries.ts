@@ -90,7 +90,7 @@ export async function createCatalogueItem(input: CreateItemInput) {
   await requireAdmin();
   const supabase = createServiceRoleClient();
 
-  const { category_ids, ...itemData } = input;
+  const { category_ids, image_urls, ...itemData } = input;
 
   const { data, error } = await supabase
     .from("catalogue_items")
@@ -119,7 +119,6 @@ export async function createCatalogueItem(input: CreateItemInput) {
       throw new Error(`Failed to link categories: ${jcError.message}`);
   }
 
-  const image_urls = input.image_urls;
   if (image_urls && image_urls.length > 0) {
     const { error: imgError } = await supabase
       .from("catalogue_item_images")

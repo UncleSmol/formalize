@@ -26,14 +26,26 @@ export function MobileMenu({ navLinks, authLinks }: MobileMenuProps) {
 
   useEffect(() => {
     const supabase = createBrowserClient();
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null);
-      setLoading(false);
-    });
+
+    function refreshUser() {
+      supabase.auth.getUser().then(({ data }) => {
+        setUser(data?.user ?? null);
+        setLoading(false);
+      });
+    }
+
+    refreshUser();
+
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
-    return () => listener?.subscription.unsubscribe();
+
+    window.addEventListener("user-metadata-updated", refreshUser);
+
+    return () => {
+      listener?.subscription.unsubscribe();
+      window.removeEventListener("user-metadata-updated", refreshUser);
+    };
   }, []);
 
   useEffect(() => {
@@ -99,18 +111,31 @@ export function MobileMenu({ navLinks, authLinks }: MobileMenuProps) {
               {!loading && (
                 <>
                   {user ? (
-                    <div className="flex gap-2 px-4 pb-4">
+                    <div className="flex items-center justify-between px-4 pb-4">
                       <Link
                         href="/account/profile"
                         onClick={() => setIsOpen(false)}
-                        className="flex flex-1 items-center justify-center gap-2 border border-white/20 px-4 py-3 text-sm font-black uppercase tracking-wide text-white"
+                        className="flex items-center gap-2"
                       >
-                        <i className="bi-person text-sm" aria-hidden="true" />
-                        Profile
+                        {(() => {
+                          const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
+                          const initial = (user.user_metadata?.full_name as string)?.charAt(0)?.toUpperCase()
+                            ?? user.email?.charAt(0).toUpperCase()
+                            ?? "?";
+                          return avatarUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={avatarUrl} alt="" className="h-8 w-8 rounded-full border border-white/20 object-cover" />
+                          ) : (
+                            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-xs font-black text-primary">
+                              {initial}
+                            </span>
+                          );
+                        })()}
+                        <span className="text-sm font-semibold text-white/70">Profile</span>
                       </Link>
                       <button
                         onClick={handleSignOut}
-                        className="flex-1 px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-red-400 transition-colors hover:bg-white/5"
+                        className="px-4 py-3 text-sm font-black uppercase tracking-wide text-red-400 transition-colors hover:bg-white/5"
                       >
                         Sign Out
                       </button>
