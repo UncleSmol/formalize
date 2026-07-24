@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createCategory, updateCategory, deleteCategory } from "@/lib/supabase/admin-queries";
+import { createCategory, deleteCategory } from "@/lib/supabase/admin-queries";
 import { getCategories } from "@/lib/supabase/queries";
 import { slugify } from "@/lib/utils";
 import { DeleteCategoryButton } from "./DeleteCategoryButton";

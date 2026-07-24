@@ -37,7 +37,7 @@ export default async function CartPage() {
           title: item?.title ?? "Unknown",
           slug: item?.slug ?? "",
           quantity: ci.quantity,
-          unitPrice: calculateDisplayPrice(item as CatalogueItem) ?? 0,
+          unitPrice: item ? calculateDisplayPrice(item) ?? 0 : 0,
           imageUrl: item?.card_image_url ?? null,
         };
       });

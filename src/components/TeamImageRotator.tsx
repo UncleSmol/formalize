@@ -16,7 +16,7 @@ const teamMembers = [
   { src: ntsako, name: "Ntsako Khoza", role: "HR & IT Support" },
 ];
 
-export function TeamImageRotator() {
+export function TeamImageRotator({ variant }: { variant?: "default" | "mobile" }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
@@ -38,6 +38,15 @@ export function TeamImageRotator() {
 
   const current = teamMembers[currentIndex];
 
+  function imageModifier(i: number) {
+    if (variant !== "mobile") return "";
+    if (i === 0) return "scale-x-[-1] -translate-x-[30%]";
+    if (i === 3) return "scale-x-[-1] -translate-x-[30%]";
+    if (i === 4) return "scale-x-[-1] -translate-x-[20%]";
+    if (i === 2) return "-translate-x-[30%]";
+    return "-translate-x-[20%]";
+  }
+
   function imageClasses(i: number) {
     if (i === currentIndex) return "translate-x-0 opacity-100 z-10";
     if (i === prevIndex) return "-translate-x-12 opacity-0 z-20";
@@ -55,16 +64,18 @@ export function TeamImageRotator() {
             src={m.src}
             alt={m.name}
             fill
-            className="object-contain"
+            className={`object-contain ${imageModifier(i)}`}
             priority={i === 0}
           />
         </div>
       ))}
 
-      <div className="absolute bottom-4 left-4 z-30 rounded-full border border-white/10 bg-black/70 px-5 py-2 backdrop-blur-sm">
-        <p className="text-sm font-black leading-none text-white">{current.name}</p>
-        <p className="mt-0.5 text-[11px] font-semibold leading-none text-primary">{current.role}</p>
-      </div>
+      {variant !== "mobile" && (
+        <div className="absolute bottom-4 left-4 z-30 rounded-full border border-white/10 bg-black/70 px-5 py-2 backdrop-blur-sm">
+          <p className="text-sm font-black leading-none text-white">{current.name}</p>
+          <p className="mt-0.5 text-[11px] font-semibold leading-none text-primary">{current.role}</p>
+        </div>
+      )}
     </div>
   );
 }

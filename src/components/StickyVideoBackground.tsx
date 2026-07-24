@@ -3,7 +3,7 @@
 export default function StickyVideoBackground() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0 h-screen w-screen overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 h-full w-full overflow-hidden"
       aria-hidden="true"
     >
       <video

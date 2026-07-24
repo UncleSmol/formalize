@@ -53,7 +53,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative border-y border-gray-200 bg-white px-6 py-12">
+      <section className="relative overflow-x-hidden border-y border-gray-200 bg-white px-6 py-12">
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
           {proofPoints.map((point) => (
             <div key={point.label}>
@@ -66,12 +66,12 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="absolute bottom-[-5px] right-0 translate-x-[30px] xl:hidden">
-          <TeamImageRotator />
+        <div className="absolute bottom-[-5px] right-[-30%] xl:hidden">
+          <TeamImageRotator variant="mobile" />
         </div>
       </section>
 
-      <section className="bg-background px-6 py-24">
+      <section className="relative z-10 bg-background px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr]">
             <div>

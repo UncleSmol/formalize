@@ -31,7 +31,7 @@ export default function RootLayout({
       lang="en"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${poppins.variable} h-full antialiased`}
+      className={`${poppins.variable} h-full overflow-x-hidden antialiased`}
     >
       <body className="relative flex min-h-full flex-col overflow-x-hidden bg-[#08080c] text-white">
         <Tracker />
