@@ -34,7 +34,7 @@ const operatingRhythm = [
 export default function Home() {
  return (
  <main className="text-white">
- <section className="relative flex min-h-[calc(100dvh-4rem)] items-center overflow-visible px-6">
+  <section className="relative flex min-h-[calc(100dvh-4rem)] items-center overflow-visible px-6 max-[969px]:pb-80">
  <div className="mx-auto w-full max-w-7xl">
  <div className="animate-reveal-up max-w-2xl">
  <h1 className="section-heading mt-6 text-4xl font-black leading-none sm:text-5xl lg:text-6xl xl:text-7xl">
@@ -69,7 +69,7 @@ export default function Home() {
  </section>
 
  <section className="relative border-y border-gray-200 bg-white px-6 py-12">
- <div className="relative z-10 mx-auto hidden max-w-7xl gap-8 min-[970px]:grid min-[970px]:grid-cols-3">
+  <div className="relative z-10 mx-auto max-w-7xl gap-8 max-[969px]:invisible min-[970px]:grid min-[970px]:grid-cols-3">
  {proofPoints.map((point) => (
  <div key={point.label} className="bg-white/80 p-4 backdrop-blur-sm">
  <p className="text-5xl font-black text-primary sm:text-6xl">
