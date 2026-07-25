@@ -65,6 +65,17 @@ body {
   animation: reveal-up 0.7s ease-out both;
 }
 
+@keyframes dot-bounce {
+  0%, 90% { transform: translateY(0); }
+  93% { transform: translateY(-5px); }
+  96% { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+.animate-dot-bounce {
+  animation: dot-bounce 12s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

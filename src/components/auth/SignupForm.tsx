@@ -8,150 +8,150 @@ import { signupSchema } from "@/lib/validations/auth";
 import { TurnstileWidget } from "@/components/auth/TurnstileWidget";
 
 export function SignupForm() {
-  const [error, setError] = useState("");
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [pending, setPending] = useState(false);
-  const [checkEmail, setCheckEmail] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+ const [error, setError] = useState("");
+ const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+ const [pending, setPending] = useState(false);
+ const [checkEmail, setCheckEmail] = useState(false);
+ const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
-  const handleCaptchaVerify = useCallback((token: string) => {
-    setCaptchaToken(token);
-  }, []);
+ const handleCaptchaVerify = useCallback((token: string) => {
+ setCaptchaToken(token);
+ }, []);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError("");
-    setFieldErrors({});
-    setPending(true);
+ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+ e.preventDefault();
+ setError("");
+ setFieldErrors({});
+ setPending(true);
 
-    if (!captchaToken) {
-      setError("Please complete the security check.");
-      setPending(false);
-      return;
-    }
+ if (!captchaToken) {
+ setError("Please complete the security check.");
+ setPending(false);
+ return;
+ }
 
-    try {
-      const form = new FormData(e.currentTarget);
-      const raw = {
-        full_name: form.get("full_name"),
-        email: form.get("email"),
-        password: form.get("password"),
-      };
+ try {
+ const form = new FormData(e.currentTarget);
+ const raw = {
+ full_name: form.get("full_name"),
+ email: form.get("email"),
+ password: form.get("password"),
+ };
 
-      const result = signupSchema.safeParse(raw);
+ const result = signupSchema.safeParse(raw);
 
-      if (!result.success) {
-        const errors: Record<string, string> = {};
-        for (const [key, msgs] of Object.entries(result.error.flatten().fieldErrors)) {
-          errors[key] = (msgs as string[])[0];
-        }
-        setFieldErrors(errors);
-        setPending(false);
-        return;
-      }
+ if (!result.success) {
+ const errors: Record<string, string> = {};
+ for (const [key, msgs] of Object.entries(result.error.flatten().fieldErrors)) {
+ errors[key] = (msgs as string[])[0];
+ }
+ setFieldErrors(errors);
+ setPending(false);
+ return;
+ }
 
-      const { full_name, email, password } = result.data;
+ const { full_name, email, password } = result.data;
 
-      const supabase = createBrowserClient();
+ const supabase = createBrowserClient();
 
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name },
-          captchaToken,
-        },
-      });
+ const { error: signUpError } = await supabase.auth.signUp({
+ email,
+ password,
+ options: {
+ data: { full_name },
+ captchaToken,
+ },
+ });
 
-      if (signUpError) {
-        setError("Unable to create account. Please try again.");
-        setPending(false);
-        return;
-      }
+ if (signUpError) {
+ setError("Unable to create account. Please try again.");
+ setPending(false);
+ return;
+ }
 
-      setCheckEmail(true);
-    } catch {
-      setError("Something went wrong. Please try again.");
-      setPending(false);
-    }
-  }
+ setCheckEmail(true);
+ } catch {
+ setError("Something went wrong. Please try again.");
+ setPending(false);
+ }
+ }
 
-  if (checkEmail) {
-    return (
-      <div className="border border-primary/30 bg-primary/10 p-6 text-center">
-        <i className="bi-envelope-check-fill text-3xl text-primary" aria-hidden="true" />
-        <h3 className="mt-3 text-lg font-black text-primary">Check your email</h3>
-        <p className="mt-2 text-sm text-white/70">
-          We sent a confirmation link. Click it to activate your account, then sign in.
-        </p>
-      </div>
-    );
-  }
+ if (checkEmail) {
+ return (
+ <div className="border border-primary/30 bg-primary/10 p-6 text-center">
+ <i className="bi-envelope-check-fill text-3xl text-primary" aria-hidden="true" />
+ <h3 className="mt-3 text-lg font-black text-primary">Check your email</h3>
+ <p className="mt-2 text-sm text-white/70">
+ We sent a confirmation link. Click it to activate your account, then sign in.
+ </p>
+ </div>
+ );
+ }
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {error && (
-        <div className="border border-red-400/30 bg-red-400/10 p-4">
-          <p className="text-sm font-bold text-red-400">{error}</p>
-        </div>
-      )}
+ return (
+ <form onSubmit={handleSubmit} className="space-y-5">
+ {error && (
+ <div className="border border-red-400/30 bg-red-400/10 p-4">
+ <p className="text-sm font-bold text-red-400">{error}</p>
+ </div>
+ )}
 
-      <div>
-        <label htmlFor="full_name" className="mb-1 block text-xs font-bold uppercase tracking-wide text-white/60">
-          Full Name
-        </label>
-        <input
-          id="full_name"
-          name="full_name"
-          required
-          className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
-          placeholder="Doctor Khoza"
-        />
-        {fieldErrors.full_name && (
-          <p className="mt-1 text-xs text-red-400">{fieldErrors.full_name}</p>
-        )}
-      </div>
+ <div>
+ <label htmlFor="full_name" className="mb-1 block text-xs font-bold uppercase tracking-wide text-white/60">
+ Full Name
+ </label>
+ <input
+ id="full_name"
+ name="full_name"
+ required
+ className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
+ placeholder="Doctor Khoza"
+ />
+ {fieldErrors.full_name && (
+ <p className="mt-1 text-xs text-red-400">{fieldErrors.full_name}</p>
+ )}
+ </div>
 
-      <div>
-        <label htmlFor="email" className="mb-1 block text-xs font-bold uppercase tracking-wide text-white/60">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
-          placeholder="you@company.com"
-        />
-        {fieldErrors.email && (
-          <p className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>
-        )}
-      </div>
+ <div>
+ <label htmlFor="email" className="mb-1 block text-xs font-bold uppercase tracking-wide text-white/60">
+ Email
+ </label>
+ <input
+ id="email"
+ name="email"
+ type="email"
+ required
+ className="w-full border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder-white/30 focus:border-primary focus:outline-none"
+ placeholder="you@company.com"
+ />
+ {fieldErrors.email && (
+ <p className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>
+ )}
+ </div>
 
-      <PasswordInput id="password" label="Password" placeholder="At least 8 characters" minLength={8} />
-      {fieldErrors.password && (
-        <p className="-mt-3 text-xs text-red-400">{fieldErrors.password}</p>
-      )}
+ <PasswordInput id="password" label="Password" placeholder="At least 8 characters" minLength={8} />
+ {fieldErrors.password && (
+ <p className="-mt-3 text-xs text-red-400">{fieldErrors.password}</p>
+ )}
 
-      <div className="flex justify-center">
-        <TurnstileWidget onVerify={handleCaptchaVerify} />
-      </div>
+ <div className="flex justify-center">
+ <TurnstileWidget onVerify={handleCaptchaVerify} />
+ </div>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="inline-flex w-full justify-center bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-opacity hover:opacity-90 disabled:opacity-50"
-      >
-        {pending ? "Creating account..." : "Create account"}
-      </button>
+ <button
+ type="submit"
+ disabled={pending}
+ className="inline-flex w-full justify-center bg-primary px-7 py-4 text-sm font-black uppercase tracking-wide text-[#08080c] transition-opacity hover:opacity-90 disabled:opacity-50"
+ >
+ {pending ? "Creating account..." : "Create account"}
+ </button>
 
-      <p className="text-center text-xs text-white/50">
-        Already have an account?{" "}
-        <Link href="/login" className="font-bold text-primary underline">
-          Sign in
-        </Link>
-      </p>
-    </form>
-  );
+ <p className="text-center text-xs text-white/50">
+ Already have an account?{" "}
+ <Link href="/login" className="font-bold text-primary underline">
+ Sign in
+ </Link>
+ </p>
+ </form>
+ );
 }

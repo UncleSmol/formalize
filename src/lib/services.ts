@@ -17,11 +17,11 @@ export const SERVICES: Service[] = [
     id: "finance",
     icon: "bi-cash-stack",
     title: "Finance",
-    description: "Take control of bookkeeping, cash flow, budgeting, and debt recovery.",
+    description: "Take control of bookkeeping, cash flow, budgeting, reconciliations, and financial reporting.",
     summary: "Master your financial foundation.",
     intro:
       "We help you build clear financial systems that give you complete visibility and control over your money.",
-    items: ["Monthly reports", "Cash flow tracking", "Budgeting", "Debt recovery"],
+    items: ["Monthly reports", "Cash flow tracking", "Budgeting", "Transaction reconciliations", "Financial analysis & reporting"],
     details: [
       "Basic accounting around your finances",
       "Remittance management and processing",
@@ -29,7 +29,8 @@ export const SERVICES: Service[] = [
       "Monthly financial reports",
       "Cash flow tracking and optimization",
       "Budgeting and forecasting",
-      "Debt recovery assistance",
+      "Transaction reconciliations",
+      "Financial analysis and reporting",
       "Tax compliance support",
     ],
     color: "bg-primary",

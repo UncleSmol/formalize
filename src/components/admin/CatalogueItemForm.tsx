@@ -5,406 +5,411 @@ import Link from "next/link";
 import type { CatalogueItem, Category } from "@/lib/supabase/types";
 
 interface ItemImage {
-  url: string;
+ url: string;
 }
 
 interface CatalogueItemFormProps {
-  item?: CatalogueItem | null;
-  categories: Category[];
-  selectedCategoryIds?: string[];
-  itemImages?: ItemImage[];
-  onSubmit: (
-    prevState: unknown,
-    formData: FormData,
-  ) => Promise<{ error?: string } | undefined>;
+ item?: CatalogueItem | null;
+ categories: Category[];
+ selectedCategoryIds?: string[];
+ itemImages?: ItemImage[];
+ onSubmit: (
+ prevState: unknown,
+ formData: FormData,
+ ) => Promise<{ error?: string; success?: boolean } | undefined>;
 }
 
 export function CatalogueItemForm({
-  item,
-  categories,
-  selectedCategoryIds = [],
-  itemImages = [],
-  onSubmit,
+ item,
+ categories,
+ selectedCategoryIds = [],
+ itemImages = [],
+ onSubmit,
 }: CatalogueItemFormProps) {
-  const [state, formAction, pending] = useActionState(onSubmit, undefined);
-  const [images, setImages] = useState<ItemImage[]>(itemImages ?? []);
+ const [state, formAction, pending] = useActionState(onSubmit, undefined);
+ const [images, setImages] = useState<ItemImage[]>(itemImages ?? []);
 
-  return (
-    <form action={formAction} className="max-w-3xl">
-      {state?.error && (
-        <div className="mb-6 rounded border border-red-200 bg-red-50 p-4">
-          <p className="text-sm font-bold text-red-700">{state.error}</p>
-        </div>
-      )}
+ return (
+ <form action={formAction} className="max-w-3xl">
+ {state?.error && (
+ <div className="mb-6 border border-red-200 bg-red-50 p-4">
+ <p className="text-sm font-bold text-red-700">{state.error}</p>
+ </div>
+ )}
+ {state?.success && (
+ <div className="mb-6 border border-green-200 bg-green-50 p-4">
+ <p className="text-sm font-bold text-green-700">Item created successfully.</p>
+ </div>
+ )}
 
-      <div className="space-y-6">
-        {/* Title */}
-        <div>
-          <label htmlFor="title" className="mb-1 block text-sm font-bold text-gray-700">
-            Title
-          </label>
-          <input
-            id="title"
-            name="title"
-            required
-            defaultValue={item?.title ?? ""}
-            className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            placeholder="e.g. Financial Dashboard"
-          />
-        </div>
+ <div className="space-y-6">
+ {/* Title */}
+ <div>
+ <label htmlFor="title" className="mb-1 block text-sm font-bold text-gray-700">
+ Title
+ </label>
+ <input
+ id="title"
+ name="title"
+ required
+ defaultValue={item?.title ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="e.g. Financial Dashboard"
+ />
+ </div>
 
-        {/* Slug */}
-        <div>
-          <label htmlFor="slug" className="mb-1 block text-sm font-bold text-gray-700">
-            Slug
-          </label>
-          <input
-            id="slug"
-            name="slug"
-            required
-            defaultValue={item?.slug ?? ""}
-            className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm font-mono text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            placeholder="e.g. financial-dashboard"
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            URL-friendly identifier. Use lowercase with hyphens.
-          </p>
-        </div>
+ {/* Slug */}
+ <div>
+ <label htmlFor="slug" className="mb-1 block text-sm font-bold text-gray-700">
+ Slug
+ </label>
+ <input
+ id="slug"
+ name="slug"
+ required
+ defaultValue={item?.slug ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm font-mono text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="e.g. financial-dashboard"
+ />
+ <p className="mt-1 text-xs text-gray-500">
+ URL-friendly identifier. Use lowercase with hyphens.
+ </p>
+ </div>
 
-        {/* Type + Status row */}
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="item_type" className="mb-1 block text-sm font-bold text-gray-700">
-              Type
-            </label>
-            <select
-              id="item_type"
-              name="item_type"
-              required
-              defaultValue={item?.item_type ?? "product"}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              <option value="product">Product</option>
-              <option value="service">Service</option>
-              <option value="resource">Resource</option>
-            </select>
-          </div>
+ {/* Type + Status row */}
+ <div className="grid gap-6 sm:grid-cols-2">
+ <div>
+ <label htmlFor="item_type" className="mb-1 block text-sm font-bold text-gray-700">
+ Type
+ </label>
+ <select
+ id="item_type"
+ name="item_type"
+ required
+ defaultValue={item?.item_type ?? "product"}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ >
+ <option value="product">Product</option>
+ <option value="service">Service</option>
+ <option value="resource">Resource</option>
+ </select>
+ </div>
 
-          <div>
-            <label htmlFor="status" className="mb-1 block text-sm font-bold text-gray-700">
-              Status
-            </label>
-            <select
-              id="status"
-              name="status"
-              required
-              defaultValue={item?.status ?? "draft"}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="archived">Archived</option>
-            </select>
-          </div>
-        </div>
+ <div>
+ <label htmlFor="status" className="mb-1 block text-sm font-bold text-gray-700">
+ Status
+ </label>
+ <select
+ id="status"
+ name="status"
+ required
+ defaultValue={item?.status ?? "draft"}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ >
+ <option value="draft">Draft</option>
+ <option value="published">Published</option>
+ <option value="archived">Archived</option>
+ </select>
+ </div>
+ </div>
 
-        {/* Pricing fields */}
-        <div className="rounded border border-gray-200 bg-gray-50 p-5">
-          <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Pricing</p>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div>
-              <label htmlFor="cost_price" className="mb-1 block text-sm font-bold text-gray-700">
-                Cost Price (ZAR)
-              </label>
-              <input
-                id="cost_price"
-                name="cost_price"
-                type="number"
-                step="0.01"
-                min="0"
-                defaultValue={item?.cost_price ?? ""}
-                className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                placeholder="e.g. 500.00"
-              />
-            </div>
+ {/* Pricing fields */}
+ <div className="border border-gray-200 bg-gray-50 p-5">
+ <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Pricing</p>
+ <div className="grid gap-6 sm:grid-cols-2">
+ <div>
+ <label htmlFor="cost_price" className="mb-1 block text-sm font-bold text-gray-700">
+ Cost Price (ZAR)
+ </label>
+ <input
+ id="cost_price"
+ name="cost_price"
+ type="number"
+ step="0.01"
+ min="0"
+ defaultValue={item?.cost_price ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="e.g. 500.00"
+ />
+ </div>
 
-            <div>
-              <label htmlFor="markup_percent" className="mb-1 block text-sm font-bold text-gray-700">
-                Markup (%)
-              </label>
-              <input
-                id="markup_percent"
-                name="markup_percent"
-                type="number"
-                step="0.01"
-                min="0"
-                defaultValue={item?.markup_percent ?? 35}
-                className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Default 35%. Selling price = cost × (1 + markup/100).
-              </p>
-            </div>
-          </div>
+ <div>
+ <label htmlFor="markup_percent" className="mb-1 block text-sm font-bold text-gray-700">
+ Markup (%)
+ </label>
+ <input
+ id="markup_percent"
+ name="markup_percent"
+ type="number"
+ step="0.01"
+ min="0"
+ defaultValue={item?.markup_percent ?? 35}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ />
+ <p className="mt-1 text-xs text-gray-500">
+ Default 35%. Selling price = cost × (1 + markup/100).
+ </p>
+ </div>
+ </div>
 
-          <div className="mt-4 flex items-center gap-3">
-            <input
-              id="selling_price_overridden"
-              name="selling_price_overridden"
-              type="checkbox"
-              value="true"
-              defaultChecked={item?.selling_price_overridden ?? false}
-              className="h-4 w-4 accent-primary"
-            />
-            <label htmlFor="selling_price_overridden" className="text-sm font-bold text-gray-700">
-              Override selling price manually
-            </label>
-          </div>
+ <div className="mt-4 flex items-center gap-3">
+ <input
+ id="selling_price_overridden"
+ name="selling_price_overridden"
+ type="checkbox"
+ value="true"
+ defaultChecked={item?.selling_price_overridden ?? false}
+ className="h-4 w-4 accent-primary"
+ />
+ <label htmlFor="selling_price_overridden" className="text-sm font-bold text-gray-700">
+ Override selling price manually
+ </label>
+ </div>
 
-          <div className="mt-3">
-            <label htmlFor="selling_price" className="mb-1 block text-sm font-bold text-gray-700">
-              Selling Price (ZAR)
-            </label>
-            <input
-              id="selling_price"
-              name="selling_price"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={item?.selling_price ?? ""}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="Leave blank to auto-calculate from cost + markup"
-            />
-          </div>
-        </div>
+ <div className="mt-3">
+ <label htmlFor="selling_price" className="mb-1 block text-sm font-bold text-gray-700">
+ Selling Price (ZAR)
+ </label>
+ <input
+ id="selling_price"
+ name="selling_price"
+ type="number"
+ step="0.01"
+ min="0"
+ defaultValue={item?.selling_price ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="Leave blank to auto-calculate from cost + markup"
+ />
+ </div>
+ </div>
 
-        {/* Shipping fields */}
-        <div className="rounded border border-gray-200 bg-gray-50 p-5">
-          <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Shipping</p>
+ {/* Shipping fields */}
+ <div className="border border-gray-200 bg-gray-50 p-5">
+ <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Shipping</p>
 
-          <div className="flex items-center gap-3">
-            <input
-              id="requires_shipping"
-              name="requires_shipping"
-              type="checkbox"
-              value="true"
-              defaultChecked={item?.requires_shipping ?? false}
-              className="h-4 w-4 accent-primary"
-            />
-            <label htmlFor="requires_shipping" className="text-sm font-bold text-gray-700">
-              This item requires shipping
-            </label>
-          </div>
+ <div className="flex items-center gap-3">
+ <input
+ id="requires_shipping"
+ name="requires_shipping"
+ type="checkbox"
+ value="true"
+ defaultChecked={item?.requires_shipping ?? false}
+ className="h-4 w-4 accent-primary"
+ />
+ <label htmlFor="requires_shipping" className="text-sm font-bold text-gray-700">
+ This item requires shipping
+ </label>
+ </div>
 
-          <div className="mt-4">
-            <label htmlFor="shipping_fee" className="mb-1 block text-sm font-bold text-gray-700">
-              Shipping Fee (ZAR)
-            </label>
-            <input
-              id="shipping_fee"
-              name="shipping_fee"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={item?.shipping_fee ?? ""}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="e.g. 150.00"
-            />
-          </div>
+ <div className="mt-4">
+ <label htmlFor="shipping_fee" className="mb-1 block text-sm font-bold text-gray-700">
+ Shipping Fee (ZAR)
+ </label>
+ <input
+ id="shipping_fee"
+ name="shipping_fee"
+ type="number"
+ step="0.01"
+ min="0"
+ defaultValue={item?.shipping_fee ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="e.g. 150.00"
+ />
+ </div>
 
-          <div className="mt-4 flex items-center gap-3">
-            <input
-              id="shipping_overridden"
-              name="shipping_overridden"
-              type="checkbox"
-              value="true"
-              defaultChecked={item?.shipping_overridden ?? false}
-              className="h-4 w-4 accent-primary"
-            />
-            <label htmlFor="shipping_overridden" className="text-sm font-bold text-gray-700">
-              Override shipping fee manually
-            </label>
-          </div>
-        </div>
+ <div className="mt-4 flex items-center gap-3">
+ <input
+ id="shipping_overridden"
+ name="shipping_overridden"
+ type="checkbox"
+ value="true"
+ defaultChecked={item?.shipping_overridden ?? false}
+ className="h-4 w-4 accent-primary"
+ />
+ <label htmlFor="shipping_overridden" className="text-sm font-bold text-gray-700">
+ Override shipping fee manually
+ </label>
+ </div>
+ </div>
 
-        {/* Descriptions */}
-        <div>
-          <label htmlFor="short_description" className="mb-1 block text-sm font-bold text-gray-700">
-            Short Description
-          </label>
-          <textarea
-            id="short_description"
-            name="short_description"
-            required
-            rows={3}
-            defaultValue={item?.short_description ?? ""}
-            className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
+ {/* Descriptions */}
+ <div>
+ <label htmlFor="short_description" className="mb-1 block text-sm font-bold text-gray-700">
+ Short Description
+ </label>
+ <textarea
+ id="short_description"
+ name="short_description"
+ required
+ rows={3}
+ defaultValue={item?.short_description ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ />
+ </div>
 
-        <div>
-          <label htmlFor="long_description" className="mb-1 block text-sm font-bold text-gray-700">
-            Long Description
-          </label>
-          <textarea
-            id="long_description"
-            name="long_description"
-            required
-            rows={6}
-            defaultValue={item?.long_description ?? ""}
-            className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
+ <div>
+ <label htmlFor="long_description" className="mb-1 block text-sm font-bold text-gray-700">
+ Long Description
+ </label>
+ <textarea
+ id="long_description"
+ name="long_description"
+ required
+ rows={6}
+ defaultValue={item?.long_description ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ />
+ </div>
 
-        {/* Image URLs */}
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="hero_image_url" className="mb-1 block text-sm font-bold text-gray-700">
-              Hero Image URL
-            </label>
-            <input
-              id="hero_image_url"
-              name="hero_image_url"
-              type="url"
-              defaultValue={item?.hero_image_url ?? ""}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="https://..."
-            />
-          </div>
+ {/* Image URLs */}
+ <div className="grid gap-6 sm:grid-cols-2">
+ <div>
+ <label htmlFor="hero_image_url" className="mb-1 block text-sm font-bold text-gray-700">
+ Hero Image URL
+ </label>
+ <input
+ id="hero_image_url"
+ name="hero_image_url"
+ type="url"
+ defaultValue={item?.hero_image_url ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="https://..."
+ />
+ </div>
 
-          <div>
-            <label htmlFor="card_image_url" className="mb-1 block text-sm font-bold text-gray-700">
-              Card Image URL
-            </label>
-            <input
-              id="card_image_url"
-              name="card_image_url"
-              type="url"
-              defaultValue={item?.card_image_url ?? ""}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="https://..."
-            />
-          </div>
-        </div>
+ <div>
+ <label htmlFor="card_image_url" className="mb-1 block text-sm font-bold text-gray-700">
+ Card Image URL
+ </label>
+ <input
+ id="card_image_url"
+ name="card_image_url"
+ type="url"
+ defaultValue={item?.card_image_url ?? ""}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="https://..."
+ />
+ </div>
+ </div>
 
-        {/* Gallery images */}
-        <div className="rounded border border-gray-200 bg-gray-50 p-5">
-          <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Image Gallery</p>
-          <p className="mb-4 text-xs text-gray-500">
-            Additional product images displayed in a gallery on the detail page.
-          </p>
+ {/* Gallery images */}
+ <div className="border border-gray-200 bg-gray-50 p-5">
+ <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Image Gallery</p>
+ <p className="mb-4 text-xs text-gray-500">
+ Additional product images displayed in a gallery on the detail page.
+ </p>
 
-          <div className="space-y-3">
-            {images.map((img, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <input
-                  type="url"
-                  value={img.url}
-                  onChange={(e) => {
-                    const next = [...images];
-                    next[i] = { url: e.target.value };
-                    setImages(next);
-                  }}
-                  className="flex-1 rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  placeholder="https://..."
-                />
-                {images.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => setImages(images.filter((_, j) => j !== i))}
-                    className="rounded bg-red-100 px-3 py-3 text-sm font-bold text-red-600 transition-colors hover:bg-red-200"
-                    title="Remove image"
-                  >
-                    <i className="bi-x" aria-hidden="true" />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
+ <div className="space-y-3">
+ {images.map((img, i) => (
+ <div key={i} className="flex items-center gap-3">
+ <input
+ type="url"
+ value={img.url}
+ onChange={(e) => {
+ const next = [...images];
+ next[i] = { url: e.target.value };
+ setImages(next);
+ }}
+ className="flex-1 border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ placeholder="https://..."
+ />
+ {images.length > 1 && (
+ <button
+ type="button"
+ onClick={() => setImages(images.filter((_, j) => j !== i))}
+ className="bg-red-100 px-3 py-3 text-sm font-bold text-red-600 transition-colors hover:bg-red-200"
+ title="Remove image"
+ >
+ <i className="bi-x" aria-hidden="true" />
+ </button>
+ )}
+ </div>
+ ))}
+ </div>
 
-          <button
-            type="button"
-            onClick={() => setImages([...images, { url: "" }])}
-            className="mt-3 flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary/80"
-          >
-            <i className="bi-plus-circle" aria-hidden="true" />
-            Add Image
-          </button>
+ <button
+ type="button"
+ onClick={() => setImages([...images, { url: "" }])}
+ className="mt-3 flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary/80"
+ >
+ <i className="bi-plus-circle" aria-hidden="true" />
+ Add Image
+ </button>
 
-          {/* Hidden inputs to carry image URLs in form submission */}
-          {images.map((img, i) => (
-            <input key={i} type="hidden" name="image_urls" value={img.url} />
-          ))}
-        </div>
+ {/* Hidden inputs to carry image URLs in form submission */}
+ {images.map((img, i) => (
+ <input key={i} type="hidden" name="image_urls" value={img.url} />
+ ))}
+ </div>
 
-        {/* CTA + Sort Order */}
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="cta_label" className="mb-1 block text-sm font-bold text-gray-700">
-              CTA Label
-            </label>
-            <input
-              id="cta_label"
-              name="cta_label"
-              defaultValue={item?.cta_label ?? "Enquire"}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
+ {/* CTA + Sort Order */}
+ <div className="grid gap-6 sm:grid-cols-2">
+ <div>
+ <label htmlFor="cta_label" className="mb-1 block text-sm font-bold text-gray-700">
+ CTA Label
+ </label>
+ <input
+ id="cta_label"
+ name="cta_label"
+ defaultValue={item?.cta_label ?? "Enquire"}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ />
+ </div>
 
-          <div>
-            <label htmlFor="sort_order" className="mb-1 block text-sm font-bold text-gray-700">
-              Sort Order
-            </label>
-            <input
-              id="sort_order"
-              name="sort_order"
-              type="number"
-              min="0"
-              defaultValue={item?.sort_order ?? 0}
-              className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
-        </div>
+ <div>
+ <label htmlFor="sort_order" className="mb-1 block text-sm font-bold text-gray-700">
+ Sort Order
+ </label>
+ <input
+ id="sort_order"
+ name="sort_order"
+ type="number"
+ min="0"
+ defaultValue={item?.sort_order ?? 0}
+ className="w-full border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+ />
+ </div>
+ </div>
 
-        {/* Categories */}
-        <div>
-          <label className="mb-2 block text-sm font-bold text-gray-700">Categories</label>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <label
-                key={cat.id}
-                className="flex cursor-pointer items-center gap-2 rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5"
-              >
-                <input
-                  type="checkbox"
-                  name="category_ids"
-                  value={cat.id}
-                  defaultChecked={selectedCategoryIds.includes(cat.id)}
-                  className="h-4 w-4 accent-primary"
-                />
-                {cat.name}
-              </label>
-            ))}
-          </div>
-        </div>
+ {/* Categories */}
+ <div>
+ <label className="mb-2 block text-sm font-bold text-gray-700">Categories</label>
+ <div className="flex flex-wrap gap-2">
+ {categories.map((cat) => (
+ <label
+ key={cat.id}
+ className="flex cursor-pointer items-center gap-2 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+ >
+ <input
+ type="checkbox"
+ name="category_ids"
+ value={cat.id}
+ defaultChecked={selectedCategoryIds.includes(cat.id)}
+ className="h-4 w-4 accent-primary"
+ />
+ {cat.name}
+ </label>
+ ))}
+ </div>
+ </div>
 
-        {/* Submit */}
-        <div className="flex items-center gap-4 pt-2">
-          <button
-            type="submit"
-            disabled={pending}
-            className="bg-primary px-8 py-3 text-sm font-black uppercase tracking-wide text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md disabled:opacity-50"
-          >
-            {pending ? "Saving..." : item ? "Update Item" : "Create Item"}
-          </button>
-          <Link
-            href="/admin/catalogue"
-            className="text-sm font-bold text-gray-500 underline transition-colors hover:text-gray-700"
-          >
-            Cancel
-          </Link>
-        </div>
-      </div>
-    </form>
-  );
+ {/* Submit */}
+ <div className="flex items-center gap-4 pt-2">
+ <button
+ type="submit"
+ disabled={pending}
+ className="bg-primary px-8 py-3 text-sm font-black uppercase tracking-wide text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md disabled:opacity-50"
+ >
+ {pending ? "Saving..." : item ? "Update Item" : "Create Item"}
+ </button>
+ <Link
+ href="/admin/catalogue"
+ className="text-sm font-bold text-gray-500 underline transition-colors hover:text-gray-700"
+ >
+ Cancel
+ </Link>
+ </div>
+ </div>
+ </form>
+ );
 }

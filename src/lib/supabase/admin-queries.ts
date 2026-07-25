@@ -8,25 +8,30 @@ import type {
   CatalogueItem,
   CatalogueItemType,
   CatalogueStatus,
+  CatalogueItemWithRelations,
   Enquiry,
   EnquiryStatus,
 } from "./types";
+import { normaliseItem } from "./queries";
 
 /* ─── Catalogue Items ────────────────────────────────────── */
 
-export async function getAllCatalogueItems(): Promise<CatalogueItem[]> {
+export async function getAllCatalogueItems(): Promise<CatalogueItemWithRelations[]> {
   await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { data, error } = await supabase
     .from("catalogue_items")
-    .select("*")
+    .select(`*,
+      categories:catalogue_item_categories(category:categories(*)),
+      images:catalogue_item_images(*)`)
     .is("deleted_at", null)
     .order("sort_order", { ascending: true })
     .order("title", { ascending: true });
 
   if (error) throw new Error(`Failed to fetch items: ${error.message}`);
-  return data ?? [];
+
+  return (data ?? []).map(normaliseItem);
 }
 
 export async function getCatalogueItemImages(

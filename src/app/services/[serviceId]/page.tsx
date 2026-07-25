@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getServiceById, SERVICES } from "@/lib/services";
 
 export function generateStaticParams() {
@@ -10,6 +11,16 @@ interface ServicePageProps {
   params: Promise<{
     serviceId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+  const { serviceId } = await params;
+  const service = getServiceById(serviceId);
+  if (!service) return { title: "Service Not Found" };
+  return {
+    title: `${service.title} Services | Formalize`,
+    description: service.description,
+  };
 }
 
 export default async function ServiceDetailPage({ params }: ServicePageProps) {

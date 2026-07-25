@@ -191,7 +191,33 @@ export async function getAllPublishedSlugs(): Promise<string[]> {
   return (data ?? []).map((item) => item.slug);
 }
 
-function normaliseItem(raw: Record<string, unknown>): CatalogueItemWithRelations {
+export async function getCatalogueHeroImages(): Promise<{ src: string; label: string }[]> {
+  const supabase = createServiceRoleClient();
+
+  const { data, error } = await supabase
+    .from("catalogue_items")
+    .select("title, card_image_url, hero_image_url, images:catalogue_item_images(url)")
+    .eq("status", "published")
+    .is("deleted_at", null)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    throw new Error(`Failed to fetch hero images: ${error.message}`);
+  }
+
+  const result: { src: string; label: string }[] = [];
+
+  for (const item of data ?? []) {
+    const url = item.card_image_url ?? item.hero_image_url ?? (item.images as { url: string }[] | undefined)?.[0]?.url;
+    if (url) {
+      result.push({ src: url, label: item.title });
+    }
+  }
+
+  return result;
+}
+
+export function normaliseItem(raw: Record<string, unknown>): CatalogueItemWithRelations {
   const rawCategories = raw.categories as
     | { category: Record<string, unknown> }[]
     | undefined;
